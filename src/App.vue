@@ -1,9 +1,19 @@
 <template>
   <div id="app">
-    <nav><router-link to="/">Home</router-link></nav>
+    <NaviBar />
     <router-view />
   </div>
 </template>
+
+<script>
+import NaviBar from "@/components/NaviBar.vue";
+
+export default {
+  components: {
+    NaviBar,
+  },
+};
+</script>
 
 <style>
 #app {
@@ -12,6 +22,14 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+/* 화면의 크기가 780px 이하 일 때만 적용 */
+@media (min-width: 780px) {
+  #app {
+    width: 950px;
+    margin: 0 auto;
+  }
 }
 
 nav {
