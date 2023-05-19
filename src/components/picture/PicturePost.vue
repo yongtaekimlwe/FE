@@ -1,65 +1,63 @@
 <template>
   <div>
-    <h4>제목을 입력하고 태그를 선택해주세요</h4>
-    <hr />
-    <b-form-input
-      class="half-width"
-      placeholder="제목 입력"
-      v-model="title"
-    ></b-form-input>
-    <h6>태그 선택</h6>
-    <div class="checkbox-group-wrapper">
-      <b-form-checkbox-group
-        v-model="selectedTags"
-        :options="options"
-      ></b-form-checkbox-group>
-    </div>
-    <br />
-    <br />
-    <div>Title: {{ title }}</div>
-    <div>Selected: {{ selectedTags }}</div>
-    <br />
-    <h4>소개글과 사진들을 선택해주세요</h4>
-    <hr />
-    <b-form-textarea
-      id="textarea"
-      v-model="text"
-      placeholder="소개글을 입력해주세요"
-      rows="3"
-      max-rows="6"
-    ></b-form-textarea>
-    <b-form-file
-      class="half-width-file"
-      v-model="selectedFiles"
-      multiple
-      accept="image/jpeg, image/png, image/gif"
-    ></b-form-file>
-    <b-button variant="outline-secondary" class="button-right" @click="submit"
-      >글 작성</b-button
-    >
+    <section>
+      <middle-title :input="firstTitle"></middle-title>
+      <input-title v-model="title"></input-title>
+    </section>
+    <section>
+      <select-tag @handleTagChange="handleTagChange"></select-tag>
+    </section>
+    <section>
+      <middle-title :input="secondTitle"></middle-title>
+      <input-description v-model="description"></input-description>
+      <input-file @handleFileChange="handleFileChange"></input-file>
+      <b-button variant="outline-secondary" class="button-right" @click="submit"
+        >글 작성</b-button
+      >
+      <b-button variant="outline-secondary" class="button-right" @click="cancel"
+        >취소</b-button
+      >
+    </section>
   </div>
 </template>
 
 <script>
+import MiddleTitle from "@/components/picture/item/MiddleTitle.vue";
+import InputDescription from "@/components/picture/item/InputDescription.vue";
+import SelectTag from "@/components/picture/item/SelectTag.vue";
+import InputTitle from "@/components/picture/item/InputTitle.vue";
+import InputFile from "@/components/picture/item/InputFile.vue";
+
 export default {
   name: "PicturePost",
-  components: {},
+  components: {
+    MiddleTitle,
+    SelectTag,
+    InputDescription,
+    InputTitle,
+    InputFile,
+  },
   data() {
     return {
+      firstTitle: "제목을 입력하고 태그들을 선택해주세요",
+      secondTitle: "소개글을 입력해주시고 사진을 선택해주세요",
       title: "",
-      selectedTags: [], // 여러 개의 값을 선택할 경우 배열로 선언
+      selectedTags: [],
       selectedFiles: [],
-      options: [
-        { value: "option1", text: "Option 1" },
-        { value: "option2", text: "Option 2" },
-        { value: "option3", text: "Option 3" },
-        { value: "option4", text: "Option 4" },
-      ],
-      text: "",
+      description: "",
     };
   },
   created() {},
   methods: {
+    handleTagChange(selectedTags) {
+      this.selectedTags = selectedTags;
+    },
+    handleFileChange(selectedFiles) {
+      this.selectedFiles = selectedFiles;
+    },
+    cancel() {
+      this.$router.go(-1);
+    },
     submit() {
       if (this.isEmpty()) {
         alert("모든 폼에 대한 입력을 완료해야 합니다.");
@@ -68,51 +66,18 @@ export default {
       }
     },
     isEmpty() {
-      if (
+      return (
         this.title === "" ||
         this.selectedFiles.length === 0 ||
         this.selectedTags.length === 0 ||
-        this.text === ""
-      ) {
-        return true;
-      }
-      return false;
+        this.description === ""
+      );
     },
   },
 };
 </script>
 
 <style scoped>
-h4 {
-  font-family: "Spoqa Han Sans Neo", sans-serif;
-  font-weight: 700;
-  text-align: left;
-  margin-top: 50px;
-}
-
-h6 {
-  font-family: "Spoqa Han Sans Neo", sans-serif;
-  font-weight: 700;
-  text-align: left;
-  margin-top: 50px;
-}
-
-.half-width {
-  width: 50%;
-  margin-top: 50px;
-}
-
-.half-width-file {
-  width: 50%;
-  margin-top: 50px;
-  float: left;
-}
-
-.checkbox-group-wrapper {
-  float: left;
-  margin-right: 20px;
-}
-
 .button-right {
   margin-top: 100px;
   float: right;
