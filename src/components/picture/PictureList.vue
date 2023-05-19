@@ -11,8 +11,10 @@
     </div>
     <br />
     <div class="text-right">
-      <b-button variant="outline-secondary" class="button-right"
-        >사진 공유하기</b-button
+      <router-link :to="{ name: 'picturepost' }"
+        ><b-button variant="outline-secondary" class="button-right"
+          >사진 공유하기</b-button
+        ></router-link
       >
     </div>
     <br />

@@ -10,6 +10,11 @@ const routes = [
         name: "picturelist",
         component: () => import("@/components/picture/PictureList"),
       },
+      {
+        path: "post",
+        name: "picturepost",
+        component: () => import("@/components/picture/PicturePost"),
+      },
     ],
   },
 ];
