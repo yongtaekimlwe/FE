@@ -23,7 +23,7 @@ const routes = [
       {
         path: "update/:id",
         name: "pictureupdate",
-        component: () => import("@/components/picture/PictureUpdate"),
+        component: () => import("@/components/picture/PicturePost"),
       },
       {
         path: "delete/:id",

@@ -12,7 +12,7 @@
       <input-content v-model="content"></input-content>
       <input-file @handleFileChange="handleFileChange"></input-file>
       <b-button variant="outline-secondary" class="button-right" @click="submit"
-        >글 작성</b-button
+        >확인</b-button
       >
       <b-button variant="outline-secondary" class="button-right" @click="cancel"
         >취소</b-button
@@ -39,15 +39,18 @@ export default {
   },
   data() {
     return {
+      id: "",
       firstTitle: "제목을 입력하고 태그들을 선택해주세요",
       secondTitle: "소개글을 입력해주시고 사진을 선택해주세요",
       title: "",
       selectedTags: [],
-      image_url: "",
+      image_url: [],
       content: "",
     };
   },
-  created() {},
+  created() {
+    this.id = this.$route.params.id;
+  },
   methods: {
     handleTagChange(selectedTags) {
       this.selectedTags = selectedTags;

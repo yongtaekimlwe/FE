@@ -14,7 +14,7 @@ export default {
   components: {},
   data() {
     return {
-      image_url: "",
+      image_url: [],
     };
   },
   watch: {
