@@ -20,6 +20,16 @@ const routes = [
         name: "picturedetail",
         component: () => import("@/components/picture/PictureDetail"),
       },
+      {
+        path: "update/:id",
+        name: "pictureupdate",
+        component: () => import("@/components/picture/PictureUpdate"),
+      },
+      {
+        path: "delete/:id",
+        name: "picturedelete",
+        component: () => import("@/components/picture/PictureDelete"),
+      },
     ],
   },
 ];

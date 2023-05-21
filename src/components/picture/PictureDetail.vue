@@ -5,13 +5,25 @@
       <input-comment></input-comment>
       <comment-list :comments="comments"></comment-list>
     </div>
+    <b-button
+      variant="outline-secondary"
+      class="button-right"
+      @click="updatePost"
+      >글 수정</b-button
+    >
+    <b-button
+      variant="outline-secondary"
+      class="button-right"
+      @click="deletePost"
+      >글 삭제</b-button
+    >
   </div>
 </template>
 
 <script>
-import CommentList from "./item/CommentList.vue";
-import InputComment from "./item/InputComment.vue";
-import PictureDescription from "./item/PictureDescription.vue";
+import CommentList from "@/components/picture/item/CommentList.vue";
+import InputComment from "@/components/picture/item/InputComment.vue";
+import PictureDescription from "@/components/picture/item/PictureDescription.vue";
 
 export default {
   name: "PictureDetail",
@@ -60,8 +72,30 @@ export default {
   created() {
     this.id = this.$route.params.id;
   },
-  methods: {},
+  methods: {
+    updatePost() {
+      if (confirm("수정하시겠습니까?")) {
+        this.$router.replace({
+          name: "pictureupdate",
+          params: { id: this.id },
+        });
+      }
+    },
+    deletePost() {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        this.$router.replace({
+          name: "picturedelete",
+          params: { id: this.id },
+        });
+      }
+    },
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.button-right {
+  margin-top: 100px;
+  float: right;
+}
+</style>
