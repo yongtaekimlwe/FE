@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "InputDescription",
+  name: "InputContent",
   components: {},
   data() {
     return {

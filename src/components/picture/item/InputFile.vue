@@ -2,8 +2,7 @@
   <div>
     <b-form-file
       class="half-width-file"
-      v-model="selectedFiles"
-      multiple
+      v-model="image_url"
       accept="image/jpeg, image/png, image/gif"
     ></b-form-file>
   </div>
@@ -15,11 +14,11 @@ export default {
   components: {},
   data() {
     return {
-      selectedFiles: [],
+      image_url: "",
     };
   },
   watch: {
-    selectedFiles: {
+    image_url: {
       handler(newVal) {
         this.handleFileChange(newVal);
       },

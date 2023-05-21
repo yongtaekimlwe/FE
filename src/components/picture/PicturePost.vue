@@ -9,7 +9,7 @@
     </section>
     <section>
       <middle-title :input="secondTitle"></middle-title>
-      <input-description v-model="description"></input-description>
+      <input-content v-model="content"></input-content>
       <input-file @handleFileChange="handleFileChange"></input-file>
       <b-button variant="outline-secondary" class="button-right" @click="submit"
         >글 작성</b-button
@@ -23,7 +23,7 @@
 
 <script>
 import MiddleTitle from "@/components/picture/item/MiddleTitle.vue";
-import InputDescription from "@/components/picture/item/InputDescription.vue";
+import InputContent from "@/components/picture/item/InputContent.vue";
 import SelectTag from "@/components/picture/item/SelectTag.vue";
 import InputTitle from "@/components/picture/item/InputTitle.vue";
 import InputFile from "@/components/picture/item/InputFile.vue";
@@ -33,7 +33,7 @@ export default {
   components: {
     MiddleTitle,
     SelectTag,
-    InputDescription,
+    InputContent,
     InputTitle,
     InputFile,
   },
@@ -43,8 +43,8 @@ export default {
       secondTitle: "소개글을 입력해주시고 사진을 선택해주세요",
       title: "",
       selectedTags: [],
-      selectedFiles: [],
-      description: "",
+      image_url: "",
+      content: "",
     };
   },
   created() {},
@@ -52,8 +52,8 @@ export default {
     handleTagChange(selectedTags) {
       this.selectedTags = selectedTags;
     },
-    handleFileChange(selectedFiles) {
-      this.selectedFiles = selectedFiles;
+    handleFileChange(image_url) {
+      this.image_url = image_url;
     },
     cancel() {
       this.$router.go(-1);
@@ -68,9 +68,9 @@ export default {
     isEmpty() {
       return (
         this.title === "" ||
-        this.selectedFiles.length === 0 ||
+        this.image_url.length === 0 ||
         this.selectedTags.length === 0 ||
-        this.description === ""
+        this.content === ""
       );
     },
   },
