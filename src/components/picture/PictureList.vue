@@ -21,26 +21,31 @@
     <br />
     <b-card-group deck>
       <div class="card-wrapper">
-        <b-card
+        <router-link
+          class="router-link"
           v-for="card in cards"
           :key="card.id"
-          :title="card.title"
-          :img-src="card.imgSrc"
-          img-alt="Image"
-          img-top
+          :to="{ name: 'picturedetail', params: { id: card.id } }"
         >
-          <b-card-text>{{ card.writer }}님의 게시글</b-card-text>
-          <template #footer>
-            <small class="text-muted"> Liked: {{ card.likeCount }} </small>
-          </template>
-        </b-card>
+          <b-card
+            :title="card.title"
+            :img-src="card.imgSrc"
+            img-alt="Image"
+            img-top
+          >
+            <b-card-text>{{ card.writer }}님의 게시글</b-card-text>
+            <template #footer>
+              <small class="text-muted"> Liked: {{ card.likeCount }} </small>
+            </template>
+          </b-card>
+        </router-link>
       </div>
     </b-card-group>
   </div>
 </template>
 
 <script>
-import TagItem from "../common/TagItem.vue";
+import TagItem from "@/components/common/TagItem.vue";
 
 export default {
   name: "PictureList",
@@ -92,6 +97,7 @@ export default {
       ],
       cards: [
         {
+          id: 0,
           title: "Title 1",
           writer: "작성자",
           likeCount: "3",
@@ -99,6 +105,7 @@ export default {
           tags: [],
         },
         {
+          id: 1,
           title: "Title 1",
           writer: "작성자",
           likeCount: "3",
@@ -106,6 +113,7 @@ export default {
           tags: [],
         },
         {
+          id: 2,
           title: "Title 1",
           writer: "작성자",
           likeCount: "3",
@@ -114,6 +122,7 @@ export default {
         },
         // 더미 데이터 추가
         {
+          id: 3,
           title: "Title 1",
           writer: "작성자",
           likeCount: "3",
@@ -121,6 +130,7 @@ export default {
           tags: [],
         },
         {
+          id: 4,
           title: "Title 1",
           writer: "작성자",
           likeCount: "3",
@@ -128,6 +138,7 @@ export default {
           tags: [],
         },
         {
+          id: 5,
           title: "Title 1",
           writer: "작성자",
           likeCount: "3",
@@ -158,5 +169,10 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
+}
+
+.router-link {
+  text-decoration: none;
+  color: inherit;
 }
 </style>
