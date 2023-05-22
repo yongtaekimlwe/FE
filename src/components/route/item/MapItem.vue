@@ -12,7 +12,7 @@ export default {
   props: {
     plans: Array,
   },
-  created: {},
+  created() {},
   mounted() {
     window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
   },

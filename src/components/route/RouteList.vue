@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <!-- hashtag -->
     <div class="tag-item-wrapper">
       <div v-for="tag in tags" :key="tag.id">
@@ -9,6 +9,12 @@
           :menu_desc="tag.menu_desc"
         ></tag-item>
       </div>
+    </div>
+
+    <!-- 새로 만들기 -->
+    <br />
+    <div id="buttons">
+      <b-button id="delete" variant="outline-dark" @click="doCreate()">새로 만들기</b-button>
     </div>
 
     <!-- TODO: 여행 경로 확인하기 -->
@@ -108,7 +114,12 @@ export default {
       ],
     };
   },
-  created: {
+  methods: {
+    doCreate() {
+      this.$router.push({ name: "routeWrite" });
+    },
+  },
+  created() {
     // TODO: axios로 tag item 가져오기
     // TODO: axios로 여행 경로 게시글 item 가져오기
   },

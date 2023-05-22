@@ -41,30 +41,7 @@
               <!-- 멤버 추가하기 -->
               <!-- TODO: 글 작성자라면 멤버를 추가할 수 있도록 -->
               <div v-if="true">
-                <div v-b-modal.modal-prevent-closing>멤버 추가하기</div>
-
-                <b-modal
-                  id="modal-prevent-closing"
-                  ref="modal"
-                  title="추가할 멤버의 이메일을 입력하세요."
-                  @show="resetModal"
-                  @hidden="resetModal"
-                  @ok="handleOk"
-                >
-                  <form ref="form" @submit.stop.prevent="handleSubmit">
-                    <b-form-group
-                      label="email"
-                      label-for="email-input"
-                      invalid-feedback="이메일을 입력해주세요"
-                    >
-                      <b-form-input
-                        id="email-input"
-                        :newFriendEmail="email"
-                        required
-                      ></b-form-input>
-                    </b-form-group>
-                  </form>
-                </b-modal>
+                <add-item-modal add="addMember"></add-item-modal>
               </div>
             </b-tooltip>
           </div>
@@ -104,9 +81,9 @@
         <!-- 수정 삭제 버튼 -->
         <!-- TODO: 작성자인지 아닌지에 따라 수정, 삭제 가능 여부 변경-->
         <div id="buttons" class="row justify-content-end" v-if="true">
-          <b-button id="modify" variant="outline-dark">수정</b-button>
+          <b-button id="modify" variant="outline-dark" @click="doModify()">수정</b-button>
           &nbsp;
-          <b-button id="delete" variant="outline-dark">삭제</b-button>
+          <b-button id="delete" variant="outline-dark" @click="doDelete()">삭제</b-button>
         </div>
       </b-col>
     </b-row>
@@ -117,6 +94,7 @@
 import draggable from "vuedraggable";
 import MapItem from "@/components/route/item/MapItem.vue";
 import TagItem from "../common/TagItem.vue";
+import AddItemModal from "@/components/route/item/AddItemModal.vue";
 import RouteAttractionItem from "@/components/route/item/RouteAttractionItem.vue";
 
 export default {
@@ -124,10 +102,12 @@ export default {
     draggable,
     MapItem,
     TagItem,
+    AddItemModal,
     RouteAttractionItem,
   },
   data() {
     return {
+      routeId: "",
       people: [
         {
           name: "민지",
@@ -204,20 +184,15 @@ export default {
     };
   },
   methods: {
-    handleOk(bvModalEvent) {
-      // Prevent modal from closing
-      bvModalEvent.preventDefault();
-      // Trigger submit handler
-      this.handleSubmit();
-    },
-    handleSubmit() {
-      // Hide the modal manually
-      this.$nextTick(() => {
-        this.$bvModal.hide("modal-prevent-closing");
+    doModify() {
+      this.$router.replace({
+        name: "routeModify",
+        params: { routeId: this.routeId },
       });
     },
-    resetModal() {
-      this.newFriendEmail = "";
+    doDelete() {
+      // TODO: 삭제하기 API
+      this.$router.push({ name: "routeList" });
     },
   },
   created: {
