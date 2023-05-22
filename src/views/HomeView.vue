@@ -27,25 +27,18 @@
     </div>
     <!-- carousel -->
     <br />
-    <b-carousel
-      id="carousel-fade"
-      style="text-shadow: 0px 0px 2px #000"
-      fade
-      indicators
-      img-width="1024"
-      img-height="480"
-    >
-      <b-carousel-slide
-        img-src="https://picsum.photos/1024/480/?image=13"
-      ></b-carousel-slide>
-      <b-carousel-slide
-        img-src="https://picsum.photos/1024/480/?image=15"
-      ></b-carousel-slide>
-      <b-carousel-slide
-        img-src="https://picsum.photos/1024/480/?image=43"
-      ></b-carousel-slide>
-    </b-carousel>
-    <!-- 인기 여행지 -->
+    <div class="banner">
+      <div class="video-container">
+        <video
+          src="@/assets/files/bgvid.mp4"
+          type="video/mp4"
+          autoplay
+          muted
+          loop
+        ></video>
+        <h1 class="video-title">BonVoyage</h1>
+      </div>
+    </div>
     <br />
     <div id="popular">
       <div id="pop-text">인기 여행지</div>
@@ -67,5 +60,26 @@ export default {
 #pop-text {
   text-align: left;
   font-weight: bold;
+}
+.banner {
+  position: relative;
+}
+
+.video-container {
+  position: relative;
+}
+
+.video-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 10vh;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.banner video {
+  width: 100%;
 }
 </style>
