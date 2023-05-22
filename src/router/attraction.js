@@ -10,6 +10,12 @@ const routes = [
         name: "attractionlist",
         component: () => import("@/components/attraction/AttractionList"),
       },
+      {
+        path: "detail",
+        name: "attractiondetail",
+        component: () => import("@/components/attraction/AttractionDetail"),
+        props: true,
+      },
     ],
   },
 ];

@@ -6,9 +6,15 @@
       <h2 class="h2 section-title">여행지</h2>
 
       <p class="section-text">검색 결과에 따른 추천 여행지입니다</p>
-      <ul class="popular-list">
+      <ul class="popular-list" v-if="destinations.length > 0">
         <li v-for="destination in destinations" :key="destination.title">
-          <div class="popular-card">
+          <router-link
+            :to="{
+              name: 'attractiondetail',
+              query: { address: encodeURIComponent(destination.addr1), id: 1 },
+            }"
+            class="popular-card"
+          >
             <figure class="card-img">
               <img
                 v-if="destination.firstimage.length > 0"
@@ -25,9 +31,10 @@
                 {{ destination.addr1 }}
               </p>
             </div>
-          </div>
+          </router-link>
         </li>
       </ul>
+      <p v-else>검색 결과가 없습니다.</p>
     </div>
   </div>
 </template>
