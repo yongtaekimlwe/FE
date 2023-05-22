@@ -2,17 +2,17 @@
   <div id="navbar">
     <b-navbar toggleable="lg" class="py-4">
       <!-- 왼쪽 로고 -->
-      <a href="#">
+      <router-link :to="{ name: 'home' }">
         <!-- <img src=""> -->
         <h3>BonVoyage</h3>
-      </a>
+      </router-link>
 
       <!-- 오른쪽 회원-->
       <!-- TODO: 로그인 여부에 따라 다르게 보이도록 하기 -->
       <div class="ml-auto">
         <!-- 로그인 X -->
         <div v-if="true">
-          <a href="#">로그인</a> |
+          <router-link :to="{ name: 'login' }">로그인</router-link> |
           <a href="#">회원가입</a>
         </div>
         <!-- 로그인 O -->
@@ -49,7 +49,9 @@ navbar {
 }
 
 a,
-a:hover {
+a:hover,
+a:link,
+a:visited {
   text-decoration: none;
   color: black;
   font-weight: 500;
