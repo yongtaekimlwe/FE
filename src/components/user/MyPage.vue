@@ -56,6 +56,7 @@
           >회원 정보 저장</b-button
         >
         <br /><br />
+        <div id="quit" @click="quitUser">회원 탈퇴</div>
       </b-form>
     </div>
   </div>
@@ -85,6 +86,10 @@ export default {
     userUpdate() {
       this.toggleStat();
       // TODO: 사용자 정보 update하기
+    },
+    quitUser() {
+      // TODO: 회원 탈퇴
+      this.$router.push("/").catch(() => {});
     },
     // 모달 관련 함수
     resetModal() {
@@ -189,5 +194,13 @@ a:visited {
   top: 145%;
   width: 150px;
   height: 45px;
+}
+
+#quit {
+  position: absolute;
+  left: 48%;
+  top: 163%;
+  color: rgb(109, 109, 109);
+  font-size: 13px;
 }
 </style>

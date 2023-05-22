@@ -28,6 +28,8 @@
               <hr />
               <b-dropdown-item href="#">좋아요 누른 글 보기</b-dropdown-item>
               <b-dropdown-item href="#">작성한 글 보기</b-dropdown-item>
+              <hr />
+              <b-dropdown-item @click="logout">로그아웃</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </div>
@@ -47,6 +49,9 @@ export default {
   methods: {
     mvProfile() {
       this.$router.push({ name: "mypage" }).catch(() => {});
+    },
+    logout() {
+      // TODO: 로그아웃
     },
   },
 };
