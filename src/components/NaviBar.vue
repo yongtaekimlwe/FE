@@ -22,7 +22,7 @@
               <!-- Using 'button-content' slot -->
               <template #button-content>
                 <!-- TODO: 사용자가 지정한 이미지가 있으면 해당 이미지 사용하기 -->
-                <b-avatar size="2rem"></b-avatar>
+                <b-avatar :src="profileImgSrc" size="2rem"></b-avatar>
               </template>
               <b-dropdown-item @click="mvProfile">회원 정보</b-dropdown-item>
               <hr />
@@ -38,9 +38,15 @@
 
 <script>
 export default {
+  data() {
+    return {
+      profileImgSrc:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5c6VkPCiNvUmomb-iGTLqP76uu9FOsJWRpg&usqp=CAU",
+    };
+  },
   methods: {
     mvProfile() {
-      this.$router.push({ name: "mypage" });
+      this.$router.push({ name: "mypage" }).catch(() => {});
     },
   },
 };
