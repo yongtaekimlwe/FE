@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import PictureRoutes from "./picture";
+import Route from "./route"
 
 Vue.use(VueRouter);
 
@@ -12,6 +13,7 @@ const routes = [
     component: HomeView,
   },
   ...PictureRoutes,
+  Route,
 ];
 
 const router = new VueRouter({
