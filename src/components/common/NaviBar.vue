@@ -6,7 +6,6 @@
         <!-- <img src=""> -->
         <h3>BonVoyage</h3>
       </router-link>
-
       <!-- 오른쪽 회원-->
       <!-- TODO: 로그인 여부에 따라 다르게 보이도록 하기 -->
       <div class="ml-auto">

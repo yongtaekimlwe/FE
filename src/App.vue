@@ -7,7 +7,6 @@
 
 <script>
 import NaviBar from "@/components/common/NaviBar.vue";
-
 export default {
   components: {
     NaviBar,

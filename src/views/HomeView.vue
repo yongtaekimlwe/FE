@@ -7,15 +7,22 @@
         menu_icon_src="fa-brands fa-fort-awesome"
         menu_desc="즐길거리"
       ></tag-item>
-      <router-link :to="{ name: 'routeList' }">
+       <router-link :to="{ name: 'routeList' }">
         <tag-item class="col-3" menu_icon_src="fa-route" menu_desc="여행 경로"></tag-item>
       </router-link>
+      <router-link :to="{ name: 'picture' }"
+        ><tag-item
+          class="col-3"
+          menu_icon_src="fa-regular fa-image"
+          menu_desc="사진 게시판"
+        >
+        </tag-item
+      ></router-link>
       <tag-item
         class="col-3"
-        menu_icon_src="fa-regular fa-image"
-        menu_desc="사진 게시판"
+        menu_icon_src="fa-solid fa-database"
+        menu_desc="추억 공유"
       ></tag-item>
-      <tag-item class="col-3" menu_icon_src="fa-solid fa-database" menu_desc="추억 공유"></tag-item>
     </div>
     <!-- carousel -->
     <br />
@@ -27,9 +34,15 @@
       img-width="1024"
       img-height="480"
     >
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=13"></b-carousel-slide>
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=15"></b-carousel-slide>
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=43"></b-carousel-slide>
+      <b-carousel-slide
+        img-src="https://picsum.photos/1024/480/?image=13"
+      ></b-carousel-slide>
+      <b-carousel-slide
+        img-src="https://picsum.photos/1024/480/?image=15"
+      ></b-carousel-slide>
+      <b-carousel-slide
+        img-src="https://picsum.photos/1024/480/?image=43"
+      ></b-carousel-slide>
     </b-carousel>
     <!-- 인기 여행지 -->
     <br />
@@ -41,7 +54,7 @@
 </template>
 
 <script>
-import TagItem from "@/components/common/TagItem";
+import TagItem from "@/components/common/TagItem.vue";
 
 export default {
   name: "HomeView",
