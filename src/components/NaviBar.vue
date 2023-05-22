@@ -11,9 +11,9 @@
       <!-- TODO: 로그인 여부에 따라 다르게 보이도록 하기 -->
       <div class="ml-auto">
         <!-- 로그인 X -->
-        <div v-if="true">
+        <div v-if="false">
           <router-link :to="{ name: 'login' }">로그인</router-link> |
-          <a href="#">회원가입</a>
+          <router-link :to="{ name: 'join' }">회원가입</router-link>
         </div>
         <!-- 로그인 O -->
         <div v-else>
@@ -21,9 +21,10 @@
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template #button-content>
-                <b-avatar></b-avatar>
+                <!-- TODO: 사용자가 지정한 이미지가 있으면 해당 이미지 사용하기 -->
+                <b-avatar size="2rem"></b-avatar>
               </template>
-              <b-dropdown-item href="#">회원 정보</b-dropdown-item>
+              <b-dropdown-item @click="mvProfile">회원 정보</b-dropdown-item>
               <hr />
               <b-dropdown-item href="#">좋아요 누른 글 보기</b-dropdown-item>
               <b-dropdown-item href="#">작성한 글 보기</b-dropdown-item>
@@ -36,7 +37,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    mvProfile() {
+      this.$router.push({ name: "mypage" });
+    },
+  },
+};
 </script>
 
 <style scoped>

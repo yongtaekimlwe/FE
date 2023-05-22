@@ -15,9 +15,9 @@ const routes = [
             component: () => import(/* webpackChunkName: "route" */ "@/components/user/UserLogin"),
           },
           {
-            path: "modify",
-            name: "routeModify",
-            component: () => import(/* webpackChunkName: "route" */ "@/components/user/UserMyPage"),
+            path: "mypage",
+            name: "mypage",
+            component: () => import(/* webpackChunkName: "route" */ "@/components/user/MyPage"),
           },
         ],
       },
