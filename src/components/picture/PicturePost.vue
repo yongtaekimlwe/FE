@@ -20,9 +20,8 @@
     </section>
   </div>
 </template>
-
 <script>
-import MiddleTitle from "@/components/picture/item/MiddleTitle.vue";
+import MiddleTitle from "@/components/common/MiddleTitle.vue";
 import InputContent from "@/components/picture/item/InputContent.vue";
 import SelectTag from "@/components/picture/item/SelectTag.vue";
 import InputTitle from "@/components/picture/item/InputTitle.vue";

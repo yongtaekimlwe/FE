@@ -2,12 +2,14 @@
   <div class="home">
     <!-- 메뉴 이동 -->
     <div id="menu" class="row">
-      <tag-item
-        class="col-3"
-        menu_icon_src="fa-brands fa-fort-awesome"
-        menu_desc="즐길거리"
-      ></tag-item>
-       <router-link :to="{ name: 'routeList' }">
+      <router-link :to="{ name: 'attraction' }">
+        <tag-item
+          class="col-3"
+          menu_icon_src="fa-brands fa-fort-awesome"
+          menu_desc="즐길거리"
+        ></tag-item>
+      </router-link>
+      <router-link :to="{ name: 'routeList' }">
         <tag-item class="col-3" menu_icon_src="fa-route" menu_desc="여행 경로"></tag-item>
       </router-link>
       <router-link :to="{ name: 'picture' }"
@@ -26,24 +28,18 @@
     </div>
     <!-- carousel -->
     <br />
-    <b-carousel
-      id="carousel-fade"
-      style="text-shadow: 0px 0px 2px #000"
-      fade
-      indicators
-      img-width="1024"
-      img-height="480"
-    >
-      <b-carousel-slide
-        img-src="https://picsum.photos/1024/480/?image=13"
-      ></b-carousel-slide>
-      <b-carousel-slide
-        img-src="https://picsum.photos/1024/480/?image=15"
-      ></b-carousel-slide>
-      <b-carousel-slide
-        img-src="https://picsum.photos/1024/480/?image=43"
-      ></b-carousel-slide>
-    </b-carousel>
+    <div class="banner">
+      <div class="video-container">
+        <video
+          src="@/assets/files/bgvid.mp4"
+          type="video/mp4"
+          autoplay
+          muted
+          loop
+        ></video>
+        <h1 class="video-title">BonVoyage</h1>
+      </div>
+    </div>
     <!-- 인기 여행지 -->
     <br />
     <div id="popular">
@@ -54,7 +50,7 @@
 </template>
 
 <script>
-import TagItem from "@/components/common/TagItem.vue";
+import TagItem from "@/components/common/TagItem";
 
 export default {
   name: "HomeView",
@@ -66,5 +62,26 @@ export default {
 #pop-text {
   text-align: left;
   font-weight: bold;
+}
+.banner {
+  position: relative;
+}
+
+.video-container {
+  position: relative;
+}
+
+.video-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 10vh;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.banner video {
+  width: 100%;
 }
 </style>
