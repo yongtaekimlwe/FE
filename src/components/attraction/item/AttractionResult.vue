@@ -11,14 +11,14 @@
           <router-link
             :to="{
               name: 'attractiondetail',
-              query: { address: encodeURIComponent(destination.addr1), id: 1 },
+              params: { destination: destination },
             }"
             class="popular-card"
           >
             <figure class="card-img">
               <img
-                v-if="destination.firstimage.length > 0"
-                :src="destination.firstimage"
+                v-if="destination.first_image.length > 0"
+                :src="destination.first_image"
               />
               <img v-else src="@/assets/popular-3.jpg" />
             </figure>
