@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input-title :title="this.destination.title"></input-title>
+    <middle-title :input="this.destination.title"></middle-title>
     <map-item :address="this.destination.addr1"></map-item>
     <br />
     <b-container class="bv-example-row">
@@ -33,13 +33,12 @@
   </div>
 </template>
 <script>
-import AttractionYoutube from "./item/AttractionYoutube.vue";
-import InputTitle from "./item/InputTitle.vue";
-import MapItem from "./item/MapItem.vue";
-
+import AttractionYoutube from "@/components/attraction/item/AttractionYoutube.vue";
+import MapItem from "@/components/attraction/item/MapItem.vue";
+import MiddleTitle from "@/components/common/MiddleTitle.vue";
 export default {
   name: "AttractionDetail",
-  components: { MapItem, AttractionYoutube, InputTitle },
+  components: { MapItem, AttractionYoutube, MiddleTitle },
 
   data() {
     return {

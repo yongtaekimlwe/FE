@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import AttractionRoutes from "./attraction";
 import PictureRoutes from "./picture";
-import Route from "./route"
+import Route from "./route";
 
 Vue.use(VueRouter);
 
