@@ -1,42 +1,69 @@
 <template>
-  <div id="app">
-    <b-avatar id="avatar" :src="profileImgSrc" size="5rem"></b-avatar>
+  <div id="app" class="container">
+    <div class="row justify-content-center">
+      <b-avatar id="avatar" :src="userInfo.imgSrc" size="7rem"></b-avatar>
+    </div>
     <div class="login">
       <b-form id="login" method="get">
-        <input :disabled="!modify" type="text" id="Uid" placeholder="아이디" v-model="userId" />
-        <br /><br />
-        <input
-          :disabled="!modify"
-          type="email"
-          id="email"
-          placeholder="이메일"
-          v-model="userEmail"
-        />
-        <input :disabled="!modify" type="text" id="name" placeholder="이름" v-model="name" />
-        <input
-          v-if="!modify"
-          :disabled="!modify"
-          type="password"
-          id="password"
-          placeholder="비밀번호"
-          v-model="password"
-        />
-        <input
-          v-if="modify"
-          :disabled="!modify"
-          type="text"
-          id="password"
-          placeholder="비밀번호"
-          v-model="password"
-        />
-        <br /><br />
-        <b-button
-          id="modifyBtn"
-          variant="outline-dark"
-          v-if="!modify"
-          v-b-modal.modal-prevent-closing
-          >회원 정보 수정</b-button
-        >
+        <div class="row justify-content-center">
+          <input
+            v-if="userInfo.password"
+            :disabled="!modify"
+            type="text"
+            id="Uid"
+            placeholder="아이디"
+            v-model="userInfo.id"
+          />
+        </div>
+        <div class="row justify-content-center">
+          <input
+            :disabled="!modify"
+            type="email"
+            id="email"
+            placeholder="이메일"
+            v-mod
+            v-model="userInfo.email"
+          />
+        </div>
+        <div class="row justify-content-center">
+          <input
+            :disabled="!modify"
+            type="text"
+            id="name"
+            placeholder="이름"
+            v-model="userInfo.name"
+          />
+        </div>
+        <div class="row justify-content-center">
+          <input
+            v-if="userInfo.password && !modify"
+            :disabled="!modify"
+            type="password"
+            id="password"
+            placeholder="비밀번호"
+            v-model="userInfo.password"
+          />
+          <input
+            v-if="modify"
+            :disabled="!modify"
+            type="text"
+            id="password"
+            placeholder="비밀번호"
+            v-model="userInfo.password"
+          />
+        </div>
+        <div class="row justify-content-center">
+          <b-button
+            id="modifyBtn"
+            variant="outline-dark"
+            v-if="userInfo.password && !modify"
+            v-b-modal.modal-prevent-closing
+            >회원 정보 수정</b-button
+          >
+        </div>
+        <div class="row justify-content-center" v-if="!userInfo.password">
+          <div id="kakaoUser">카카오로 회원가입한 사용자 입니다.</div>
+        </div>
         <b-modal
           id="modal-prevent-closing"
           ref="modal"
@@ -46,7 +73,7 @@
           @ok="handleOk"
         >
           <form ref="form" @submit.stop.prevent="handleSubmit">
-            <b-form-group :state="nameState">
+            <b-form-group>
               <b-form-input id="name-input" v-model="checkPassword" required></b-form-input>
             </b-form-group>
           </form>
@@ -55,24 +82,23 @@
         <b-button id="modifyBtn" variant="outline-dark" v-if="modify" @click="userUpdate()"
           >회원 정보 저장</b-button
         >
-        <br /><br />
-        <div id="quit" @click="quitUser">회원 탈퇴</div>
+        <div class="row justify-content-center">
+          <div id="quit" @click="quitUser">회원 탈퇴</div>
+        </div>
       </b-form>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   data() {
     return {
       modify: false,
-      userId: "duckduck",
-      userEmail: "duck@duck.com",
-      name: "박꽥꽥",
-      password: "1234",
-      profileImgSrc:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5c6VkPCiNvUmomb-iGTLqP76uu9FOsJWRpg&usqp=CAU",
       checkPassword: "",
     };
   },
@@ -114,6 +140,9 @@ export default {
       });
     },
   },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
 };
 </script>
 
@@ -128,26 +157,19 @@ a:visited {
 }
 
 #app {
-  position: relative;
-  margin: 0;
-  padding: 0;
+  padding: 10%;
 }
+
 .login {
   overflow: hidden;
   margin: auto;
-  padding: 80px;
 }
 
-#avatar {
-  position: absolute;
-  left: 46%;
-  top: 30%;
+.row {
+  padding: 5px;
 }
 
 #name {
-  position: absolute;
-  left: 35%;
-  top: 65%;
   width: 300px;
   height: 40px;
   border: 1px solid black;
@@ -156,9 +178,6 @@ a:visited {
 }
 
 #Uid {
-  position: absolute;
-  left: 35%;
-  top: 85%;
   width: 300px;
   height: 40px;
   border: 1px solid black;
@@ -167,9 +186,6 @@ a:visited {
 }
 
 #email {
-  position: absolute;
-  left: 35%;
-  top: 105%;
   width: 300px;
   height: 40px;
   border: 1px solid black;
@@ -178,9 +194,6 @@ a:visited {
 }
 
 #password {
-  position: absolute;
-  left: 35%;
-  top: 125%;
   width: 300px;
   height: 40px;
   border: 1px solid black;
@@ -189,17 +202,16 @@ a:visited {
 }
 
 #modifyBtn {
-  position: absolute;
-  left: 43%;
-  top: 145%;
   width: 150px;
   height: 45px;
+  margin: 5px;
+}
+
+#kakaoUser {
+  color: rgb(109, 109, 109);
 }
 
 #quit {
-  position: absolute;
-  left: 48%;
-  top: 163%;
   color: rgb(109, 109, 109);
   font-size: 13px;
 }
