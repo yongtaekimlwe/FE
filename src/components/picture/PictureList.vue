@@ -4,8 +4,8 @@
       <div v-for="tag in tags" :key="tag.id">
         <tag-item
           class="col-3"
-          :menu_icon_src="tag.menu_icon_src"
-          :menu_desc="tag.menu_desc"
+          :menu_icon_src="tag.tagIcon"
+          :menu_desc="tag.tagName"
         ></tag-item>
       </div>
     </div>
@@ -23,19 +23,21 @@
       <div class="card-wrapper">
         <router-link
           class="router-link"
-          v-for="card in cards"
-          :key="card.id"
-          :to="{ name: 'picturedetail', params: { id: card.id } }"
+          v-for="picture in pictures"
+          :key="picture.imageId"
+          :to="{ name: 'picturedetail', params: { imageId: picture.imageId } }"
         >
           <b-card
-            :title="card.title"
-            :img-src="card.imgSrc"
+            :title="picture.title"
+            :img-src="picture.imageUrl"
             img-alt="Image"
             img-top
           >
-            <b-card-text>{{ card.writer }}님의 게시글</b-card-text>
+            <b-card-body
+              ><tag-list-detail :tags="tags"></tag-list-detail
+            ></b-card-body>
             <template #footer>
-              <small class="text-muted"> Liked: {{ card.likeCount }} </small>
+              <small class="text-muted"> Liked: 3 </small>
             </template>
           </b-card>
         </router-link>
@@ -45,110 +47,39 @@
 </template>
 
 <script>
+import { getPictures } from "@/api/picture";
 import TagItem from "@/components/common/TagItem.vue";
+import TagListDetail from "../common/TagListDetail.vue";
 
 export default {
   name: "PictureList",
-  components: { TagItem },
+  components: { TagItem, TagListDetail },
   data() {
     return {
       message: "Picture List",
       tags: [
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
+        { tagIcon: "fa-umbrella-beach", tagName: "바다" },
+        { tagIcon: "fa-umbrella-beach", tagName: "산" },
+        { tagIcon: "fa-route", tagName: "가족과 함께" },
+        { tagIcon: "fa-route", tagName: "연인과 함께" },
+        { tagIcon: "fa-route", tagName: "호캉스" },
+        { tagIcon: "fa-route", tagName: "촌캉스" },
+        { tagIcon: "fa-route", tagName: "액티비티" },
+        { tagIcon: "fa-route", tagName: "힐링" },
       ],
-      cards: [
-        {
-          id: 0,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        {
-          id: 1,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        {
-          id: 2,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        // 더미 데이터 추가
-        {
-          id: 3,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        {
-          id: 4,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        {
-          id: 5,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-      ],
+      pictures: [],
     };
   },
-  created() {},
+  created() {
+    getPictures(
+      ({ data }) => {
+        this.pictures = data.pictures;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  },
   methods: {},
 };
 </script>
