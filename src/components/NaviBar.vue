@@ -11,7 +11,7 @@
       <!-- TODO: 로그인 여부에 따라 다르게 보이도록 하기 -->
       <div class="ml-auto">
         <!-- 로그인 X -->
-        <div v-if="false">
+        <div v-if="!userInfo">
           <router-link :to="{ name: 'login' }">로그인</router-link> |
           <router-link :to="{ name: 'join' }">회원가입</router-link>
         </div>
@@ -22,7 +22,7 @@
               <!-- Using 'button-content' slot -->
               <template #button-content>
                 <!-- TODO: 사용자가 지정한 이미지가 있으면 해당 이미지 사용하기 -->
-                <b-avatar :src="profileImgSrc" size="2rem"></b-avatar>
+                <b-avatar :src="userInfo.imgSrc" size="2rem"></b-avatar>
               </template>
               <b-dropdown-item @click="mvProfile">회원 정보</b-dropdown-item>
               <hr />
@@ -39,12 +39,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   data() {
     return {
       profileImgSrc:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5c6VkPCiNvUmomb-iGTLqP76uu9FOsJWRpg&usqp=CAU",
     };
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
   },
   methods: {
     mvProfile() {

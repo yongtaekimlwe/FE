@@ -7,7 +7,9 @@
         <br /><br />
         <input type="Password" id="Pass" placeholder="비밀번호" v-model="password" />
         <br /><br />
-        <img id="kakaoLogin" src="@/assets/kakao_login_medium.png" />
+        <a :href="Kakao_AUTH_URI">
+          <img id="kakaoLogin" src="@/assets/kakao_login_medium.png" />
+        </a>
         <br /><br />
         <b-button id="loginBtn" variant="outline-dark">로그인</b-button>
         <br /><br />
@@ -24,10 +26,13 @@
 export default {
   data() {
     return {
+      Kakao_AUTH_URI: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.VUE_APP_KAKAOLOGIN_KEY}&redirect_uri=${process.env.VUE_APP_REDIRECT_URL}&response_type=code`,
       userId: "",
       password: "",
     };
   },
+  methods: {},
+  created() {},
 };
 </script>
 

@@ -19,6 +19,11 @@ const routes = [
             name: "mypage",
             component: () => import(/* webpackChunkName: "route" */ "@/components/user/MyPage"),
           },
+          {
+            path: "oauth",
+            name: "kakaoLogin",
+            component: () => import(/* webpackChunkName: "route" */ "@/components/user/KakaoLogin"),
+          }
         ],
       },
 ];
