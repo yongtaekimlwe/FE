@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 const userStore = "userStore";
 
@@ -54,11 +54,12 @@ export default {
     ...mapState(userStore, ["userInfo"]),
   },
   methods: {
+    ...mapActions(userStore, ["userLogout"]),
     mvProfile() {
       this.$router.push({ name: "mypage" }).catch(() => {});
     },
     logout() {
-      // TODO: 로그아웃
+      this.userLogout();
     },
   },
 };

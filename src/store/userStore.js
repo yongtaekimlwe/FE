@@ -52,7 +52,12 @@ const memberStore = {
           console.log(error);
         }
       );
-    },
+      },
+      async userLogout({ commit }) {
+        commit("SET_IS_LOGIN", false);
+        commit("SET_USER_INFO", null);
+        commit("SET_IS_VALID_TOKEN", false);
+      }
     // async getUserInfo({ commit, dispatch }, token) {
     //   let decodeToken = jwtDecode(token);
     //   // console.log("2. getUserInfo() decodeToken :: ", decodeToken);

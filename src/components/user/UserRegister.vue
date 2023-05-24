@@ -11,7 +11,9 @@
         <br /><br />
         <input type="email" id="Email" placeholder="이메일" v-model="email" />
         <br /><br />
-        <img id="kakaoLogin" src="@/assets/kakao_login_medium.png" />
+        <a :href="Kakao_AUTH_URI">
+          <img id="kakaoLogin" src="@/assets/kakao_login_medium.png" />
+        </a>
         <br /><br />
         <b-button id="loginBtn" variant="outline-dark">회원가입</b-button>
       </b-form>
@@ -23,6 +25,7 @@
 export default {
   data() {
     return {
+      Kakao_AUTH_URI: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.VUE_APP_KAKAOLOGIN_KEY}&redirect_uri=${process.env.VUE_APP_REDIRECT_URL}&response_type=code`,
       userId: "",
       userName: "",
       password: "",
