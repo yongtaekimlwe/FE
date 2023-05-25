@@ -40,7 +40,7 @@ async function postPictureBoard(pictureBoard, success, fail) {
 //사진 게시물 수정
 async function updatePictureBoard(imageId, pictureBoard, success, fail) {
   await picture
-    .update(`/${imageId}`, JSON.stringify(pictureBoard))
+    .put(`/${imageId}`, JSON.stringify(pictureBoard))
     .then(success)
     .catch(fail);
 }

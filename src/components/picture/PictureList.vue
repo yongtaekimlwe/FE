@@ -12,7 +12,10 @@
     <br />
     <div class="text-right">
       <router-link :to="{ name: 'picturepost' }"
-        ><b-button variant="outline-secondary" class="button-right"
+        ><b-button
+          variant="outline-secondary"
+          class="button-right"
+          v-if="userInfo"
           >사진 공유하기</b-button
         ></router-link
       >
@@ -51,7 +54,8 @@ import { getPictures } from "@/api/picture";
 import TagItem from "@/components/common/TagItem.vue";
 import TagListDetail from "../common/TagListDetail.vue";
 import { getHashtags } from "@/api/hashtag";
-
+import { mapState } from "vuex";
+const userStore = "userStore";
 export default {
   name: "PictureList",
   components: { TagItem, TagListDetail },
@@ -82,6 +86,9 @@ export default {
     );
   },
   methods: {},
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
 };
 </script>
 <style scoped>
