@@ -23,6 +23,14 @@
           <p class="commentItem_commentContent__1yK7o">
             {{ comment.content }}
           </p>
+          <b-button
+            v-if="comment.nickname === userInfo.name"
+            variant="outline-secondary"
+            class="btn-sm float-right"
+            @click="deleteCommentById(comment.commentId)"
+          >
+            댓글 삭제
+          </b-button>
         </section>
       </li>
     </ul>
@@ -30,6 +38,9 @@
 </template>
 
 <script>
+import { deleteComment } from "@/api/picture";
+import { mapState, mapActions } from "vuex";
+const userStore = "userStore";
 export default {
   name: "CommentList",
   components: {},
@@ -39,8 +50,22 @@ export default {
   data() {
     return {};
   },
-  created() {},
-  methods: {},
+  created() {
+    console.log(this.comments);
+  },
+  methods: {
+    ...mapActions(userStore, ["userLogout"]),
+    deleteCommentById(id) {
+      deleteComment(id)
+        .then(() => location.reload())
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
 };
 </script>
 
