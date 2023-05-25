@@ -2,7 +2,7 @@
   <div>
     <div>
       <picture-description :data="this.picture"></picture-description>
-      <input-comment></input-comment>
+      <input-comment :imageId="this.imageId"></input-comment>
       <comment-list :comments="comments"></comment-list>
     </div>
     <b-button
@@ -24,7 +24,7 @@
 import CommentList from "@/components/picture/item/CommentList.vue";
 import InputComment from "@/components/picture/item/InputComment.vue";
 import PictureDescription from "@/components/picture/item/PictureDescription.vue";
-import { getPictureDetail } from "@/api/picture";
+import { getPictureDetail, getPictureCommentsByImageId } from "@/api/picture";
 
 export default {
   name: "PictureDetail",
@@ -34,27 +34,29 @@ export default {
       imageId: "",
       title: "",
       picture: {},
-      comments: [
-        {
-          userId: "taeyong",
-          content: "첫 댓글",
-        },
-        {
-          userId: "yehan",
-          content: "두번째 댓글",
-        },
-      ],
+      comments: [],
     };
   },
   created() {
     this.imageId = this.$route.params.imageId;
-    getPictureDetail(this.imageId, ({ data }) => {
-      console.log(data);
-      this.picture = data;
-    }),
+    getPictureDetail(
+      this.imageId,
+      ({ data }) => {
+        this.picture = data;
+      },
       (error) => {
         console.log(error);
-      };
+      }
+    );
+    getPictureCommentsByImageId(
+      this.imageId,
+      ({ data }) => {
+        this.comments = data.comments;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
   methods: {
     updatePost() {

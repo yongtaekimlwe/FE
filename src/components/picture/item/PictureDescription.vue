@@ -4,7 +4,7 @@
       <b-row no-gutters>
         <b-col md="6">
           <b-card-img
-            src="https://picsum.photos/300/150/?image=41"
+            :src="this.data.imageUrl"
             alt="Image"
             class="rounded-0"
           ></b-card-img>
