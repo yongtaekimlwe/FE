@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-b-modal.modal-prevent-closing>
-      <div v-if="add == 'addMember'">멤버 추가하기</div>
+      <div v-if="add == 'addMember'">친구 초대하기</div>
       <div v-else>
         <font-awesome-icon :icon="['fas', 'circle-plus']" style="color: #dedede" />
       </div>
@@ -12,19 +12,18 @@
       <b-modal
         id="modal-prevent-closing"
         ref="modal"
-        title="멤버 추가하기"
+        title="친구 초대하기"
         @show="resetModal"
         @hidden="resetModal"
         @ok="handleOk"
       >
         <form ref="form" @submit.stop.prevent="handleSubmit">
-          <b-form-group label="이메일" label-for="email-input" invalid-feedback="Name is required">
-            <b-form-input
-              id="email-input"
-              v-model="name"
-              :state="nameState"
-              required
-            ></b-form-input>
+          <b-form-group
+            label="이메일을 입력해 주세요."
+            label-for="email-input"
+            invalid-feedback="Name is required"
+          >
+            <b-form-input id="email-input" v-model="email" required></b-form-input>
           </b-form-group>
         </form>
       </b-modal>
@@ -91,7 +90,9 @@
   </div>
 </template>
 
-<script scoped>
+<script>
+import { searchByEmail } from "@/api/route";
+
 export default {
   data() {
     return {
@@ -104,6 +105,7 @@ export default {
   components: {},
   props: {
     add: String,
+    routeId: String,
   },
   methods: {
     checkFormValidity() {
@@ -129,6 +131,19 @@ export default {
       if (!this.checkFormValidity()) {
         return;
       }
+    },
+  },
+  watch: {
+    email(newValue) {
+      console.log(this.routeId);
+      searchByEmail(
+        this.routeId,
+        newValue,
+        ({ data }) => {
+          console.log(data);
+        },
+        (error) => console.log(error)
+      );
     },
   },
 };

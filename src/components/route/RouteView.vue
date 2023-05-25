@@ -31,7 +31,7 @@
                   v-for="(person, index) in friends"
                   :key="index"
                 >
-                  <b-avatar class="mr-2" :src="person.src"></b-avatar>
+                  <b-avatar class="mr-2" :src="person.imgSrc"></b-avatar>
                   <div>
                     <div id="person-name">{{ person.name }}</div>
                     <div>{{ person.email }}</div>
@@ -39,10 +39,7 @@
                 </b-list-group-item>
               </b-list-group>
               <!-- 멤버 추가하기 -->
-              <!-- TODO: 글 작성자라면 멤버를 추가할 수 있도록 -->
-              <div v-if="true">
-                <add-item-modal add="addMember"></add-item-modal>
-              </div>
+              <add-item-modal add="addMember" :routeId="routeId"></add-item-modal>
             </b-tooltip>
           </div>
           <div class="heart" v-else>
