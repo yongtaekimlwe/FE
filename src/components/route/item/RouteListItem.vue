@@ -7,11 +7,12 @@
           <h4>{{ title }}</h4>
         </div>
         <!-- 태그 -->
-        <!-- <div id="tags" class="row justify-content-center">
-          <div id="tag" v-for="(tag, index) in tags" :key="index">
-            <tag-item :menu_icon_src="tag.menu_icon_src" :menu_desc="tag.menu_desc"></tag-item>
-          </div>
-        </div> -->
+        <div class="tag-container" v-for="tag in this.tags" :key="tag.id">
+          <b-badge href="#" variant="dark" :menu_icon_src="tag.menu_icon_src" class="tag-item">
+            {{ tag.tagName }}
+          </b-badge>
+          <span id="spanblank"></span>
+        </div>
         <!-- 좋아요 수, 작성자 -->
         <div id="infos">
           <small class="text-muted">

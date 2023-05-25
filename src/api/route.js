@@ -14,8 +14,12 @@ async function searchByEmail(routeId, email, success, fail) {
     await route.get(`/friend?email=${email}`).then(success).catch(fail);
 }
 
-// async function registRoute(success, fail) {
-//     await user.get(`/kakao/token?code=${code}`).then(success).catch(fail);
-// }
+async function addFriend(email, routeId, success, fail) {
+    await route.get(`/friend/add/${routeId}?email=${email}`).then(success).catch(fail);
+}
+  
+async function deleteFriend(email, routeId, success, fail) {
+    await route.get(`/friend/delete/${routeId}?email=${email}`).then(success).catch(fail);
+  }
 
-export { getAllRoutes, getRoute, searchByEmail };
+export { getAllRoutes, getRoute, searchByEmail, addFriend, deleteFriend };

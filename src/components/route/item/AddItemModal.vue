@@ -26,6 +26,20 @@
             <b-form-input id="email-input" v-model="email" required></b-form-input>
           </b-form-group>
         </form>
+        <!-- 해당 이메일을 가진 사용자 보여주기 -->
+        <section>
+          <b-list-group style="width: 100%">
+            <b-list-group-item
+              class="d-flex align-items-center"
+              v-for="(user, index) in emailList"
+              :key="index"
+            >
+              <b-avatar class="mr-3" :src="user.imgSrc"></b-avatar>
+              <span class="mr-auto">{{ user.email }}</span>
+              <b-badge @click="addUser(user.email)">+</b-badge>
+            </b-list-group-item>
+          </b-list-group>
+        </section>
       </b-modal>
     </div>
 
@@ -91,12 +105,13 @@
 </template>
 
 <script>
-import { searchByEmail } from "@/api/route";
+import { searchByEmail, addFriend } from "@/api/route";
 
 export default {
   data() {
     return {
       email: "",
+      emailList: [],
       emailState: null,
       attraction: "",
       attractionState: null,
@@ -132,15 +147,19 @@ export default {
         return;
       }
     },
+    async addUser(data) {
+      console.log(data);
+      await addFriend(data, this.routeId);
+      this.$emit("userUpdate");
+    },
   },
   watch: {
     email(newValue) {
-      console.log(this.routeId);
       searchByEmail(
         this.routeId,
         newValue,
         ({ data }) => {
-          console.log(data);
+          this.emailList = data;
         },
         (error) => console.log(error)
       );

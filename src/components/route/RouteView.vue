@@ -10,8 +10,11 @@
         <div class="row">
           <div id="blank"></div>
           <!-- 태그 -->
-          <div id="tag" v-for="(tag, index) in hashtags" :key="index">
-            <tag-item :menu_icon_src="tag.tagIcon" :menu_desc="tag.tagName"></tag-item>
+          <div class="tag-container" v-for="tag in this.hashtags" :key="tag.id">
+            <b-badge href="#" variant="dark" :menu_icon_src="tag.menu_icon_src" class="tag-item">
+              {{ tag.tagName }}
+            </b-badge>
+            <span id="spanblank"></span>
           </div>
           <!-- 사람 -->
           <!-- TODO: 참여자인지 아닌지에 따라 하트 or 참여자 목록 보기 -->
@@ -25,21 +28,33 @@
             </b-avatar-group>
             <!-- 참여하는 모든 사람 보기 -->
             <b-tooltip target="people-group" triggers="click" placement="bottom" variant="light">
-              <b-list-group>
+              <b-list-group style="width: 300px">
                 <b-list-group-item
                   class="d-flex align-items-center"
                   v-for="(person, index) in friends"
                   :key="index"
+                  width
                 >
                   <b-avatar class="mr-2" :src="person.imgSrc"></b-avatar>
                   <div>
                     <div id="person-name">{{ person.name }}</div>
-                    <div>{{ person.email }}</div>
+                    <div>
+                      {{ person.email }}
+                      <b-badge
+                        class="justify-content-end"
+                        @click="deleteFriendFromList(person.email)"
+                        >-</b-badge
+                      >
+                    </div>
                   </div>
                 </b-list-group-item>
               </b-list-group>
               <!-- 멤버 추가하기 -->
-              <add-item-modal add="addMember" :routeId="routeId"></add-item-modal>
+              <add-item-modal
+                add="addMember"
+                :routeId="routeId"
+                @userUpdate="updateUser()"
+              ></add-item-modal>
             </b-tooltip>
           </div>
           <div class="heart" v-else>
@@ -90,10 +105,9 @@
 <script>
 import Draggable from "vuedraggable";
 import MapItem from "@/components/route/item/MapItem.vue";
-import TagItem from "../common/TagItem.vue";
 import AddItemModal from "@/components/route/item/AddItemModal.vue";
 import RouteAttractionItem from "@/components/route/item/RouteAttractionItem.vue";
-import { getRoute } from "@/api/route";
+import { getRoute, deleteFriend } from "@/api/route";
 import { mapState } from "vuex";
 
 const userStore = "userStore";
@@ -102,12 +116,12 @@ export default {
   components: {
     Draggable,
     MapItem,
-    TagItem,
     AddItemModal,
     RouteAttractionItem,
   },
   data() {
     return {
+      routeId: "",
       friends: [],
       newFriendEmail: "",
       title: "",
@@ -137,6 +151,27 @@ export default {
     doDelete() {
       // TODO: 삭제하기 API
       this.$router.push({ name: "routeList" });
+    },
+    updateUser() {
+      getRoute(
+        this.routeId,
+        ({ data }) => {
+          console.log(data);
+          this.friends = data.participants;
+          this.title = data.title;
+          this.content = data.content;
+          this.userName = data.userName;
+          this.likes = data.likes;
+          this.hashtags = data.hashtags;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    deleteFriendFromList(data) {
+      deleteFriend(data, this.routeId);
+      this.updateUser();
     },
   },
   created() {
@@ -200,5 +235,9 @@ export default {
   position: absolute;
   bottom: 0px;
   right: 10%;
+}
+
+#spanblank {
+  margin-right: 4px;
 }
 </style>

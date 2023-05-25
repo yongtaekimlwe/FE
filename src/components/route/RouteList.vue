@@ -2,12 +2,8 @@
   <div id="app" class="container">
     <!-- hashtag -->
     <div class="tag-item-wrapper">
-      <div v-for="tag in tags" :key="tag.id">
-        <tag-item
-          class="col-3"
-          :menu_icon_src="tag.menu_icon_src"
-          :menu_desc="tag.menu_desc"
-        ></tag-item>
+      <div v-for="tag in hashtags" :key="tag.id">
+        <tag-item class="col-3" :menu_icon_src="tag.tagIcon" :menu_desc="tag.tagName"></tag-item>
       </div>
     </div>
 
@@ -41,6 +37,7 @@
 import TagItem from "../common/TagItem";
 import RouteListItem from "@/components/route/item/RouteListItem";
 import { getAllRoutes } from "@/api/route";
+import { getHashtags } from "@/api/hashtag";
 
 export default {
   name: "RouteList",
@@ -50,16 +47,7 @@ export default {
   },
   data() {
     return {
-      tags: [
-        { menu_icon_src: "fa-umbrella-beach", menu_desc: "바다" },
-        { menu_icon_src: "fa-umbrella-beach", menu_desc: "산" },
-        { menu_icon_src: "fa-route", menu_desc: "가족과 함께" },
-        { menu_icon_src: "fa-route", menu_desc: "연인과 함께" },
-        { menu_icon_src: "fa-route", menu_desc: "호캉스" },
-        { menu_icon_src: "fa-route", menu_desc: "촌캉스" },
-        { menu_icon_src: "fa-route", menu_desc: "액티비티" },
-        { menu_icon_src: "fa-route", menu_desc: "힐링" },
-      ],
+      hashtags: [],
       routes: [],
     };
   },
@@ -70,11 +58,18 @@ export default {
   },
   created() {
     // TODO: axios로 tag item 가져오기
-    // TODO: axios로 여행 경로 게시글 item 가져오기
     getAllRoutes(
       ({ data }) => {
-        console.log(data);
+        // console.log(data);
         this.routes = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    getHashtags(
+      ({ data }) => {
+        this.hashtags = data.hashtags;
       },
       (error) => {
         console.log(error);
