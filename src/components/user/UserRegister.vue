@@ -3,8 +3,6 @@
     <h4>지금 <strong>Bon Voyage</strong>를 시작하세요!</h4>
     <div class="login">
       <b-form id="login" method="get">
-        <input type="text" id="Uid" placeholder="아이디" v-model="userId" />
-        <br /><br />
         <input type="text" id="name" placeholder="이름" v-model="userName" />
         <br /><br />
         <input type="Password" id="Pass" placeholder="비밀번호" v-model="password" />
@@ -15,13 +13,15 @@
           <img id="kakaoLogin" src="@/assets/kakao_login_medium.png" />
         </a>
         <br /><br />
-        <b-button id="loginBtn" variant="outline-dark">회원가입</b-button>
+        <b-button id="loginBtn" variant="outline-dark" @click="regist()">회원가입</b-button>
       </b-form>
     </div>
   </div>
 </template>
 
 <script>
+import { join } from "@/api/user";
+
 export default {
   data() {
     return {
@@ -31,6 +31,22 @@ export default {
       password: "",
       email: "",
     };
+  },
+  methods: {
+    regist() {
+      var user = { password: this.password, name: this.userName, email: this.email };
+
+      join(
+        user,
+        (success) => {
+          console.log(success);
+          this.$router.push({ name: "login" });
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
   },
 };
 </script>

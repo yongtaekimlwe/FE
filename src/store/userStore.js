@@ -1,6 +1,6 @@
-// import jwtDecode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { kakaoLogin } from "@/api/user";
+import { kakaoLogin, login, findById } from "@/api/user";
 
 const memberStore = {
   namespaced: true,
@@ -40,8 +40,8 @@ const memberStore = {
         ({ data }) => {
           if (data.email) {
             commit("SET_IS_LOGIN", true);
-              commit("SET_IS_LOGIN_ERROR", false);
-              commit("SET_USER_INFO", data);
+            commit("SET_IS_LOGIN_ERROR", false);
+            commit("SET_USER_INFO", data);
             router.push({ name: "home" });
           } else {
             commit("SET_IS_LOGIN", false);
@@ -52,49 +52,54 @@ const memberStore = {
           console.log(error);
         }
       );
-      },
-      async userLogout({ commit }) {
-        commit("SET_IS_LOGIN", false);
-        commit("SET_USER_INFO", null);
-        commit("SET_IS_VALID_TOKEN", false);
-      }
-    // async getUserInfo({ commit, dispatch }, token) {
-    //   let decodeToken = jwtDecode(token);
-    //   // console.log("2. getUserInfo() decodeToken :: ", decodeToken);
-    //   await findById(
-    //     decodeToken.userid,
-    //     ({ data }) => {
-    //       if (data.message === "success") {
-    //         commit("SET_USER_INFO", data.userInfo);
-    //         // console.log("3. getUserInfo data >> ", data);
-    //       } else {
-    //         console.log("유저 정보 없음!!!!");
-    //       }
-    //     },
-    //     async (error) => {
-    //       console.log("getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
-    //       commit("SET_IS_VALID_TOKEN", false);
-    //       await dispatch("tokenRegeneration");
-    //     }
-    //   );
-    // },
-    // async userLogout({ commit }, userid) {
-    //   await logout(
-    //     userid,
-    //     ({ data }) => {
-    //       if (data.message === "success") {
-    //         commit("SET_IS_LOGIN", false);
-    //         commit("SET_USER_INFO", null);
-    //         commit("SET_IS_VALID_TOKEN", false);
-    //       } else {
-    //         console.log("유저 정보 없음!!!!");
-    //       }
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   );
-    // },
+    },
+    async userConfirm({ commit }, user) {
+      await login(
+        user,
+        ({ data }) => {
+          if (data.message === "SUCCESS") {
+            let accessToken = data["access-token"];
+            // console.log("login success token created!!!! >> ", accessToken);
+            commit("SET_IS_LOGIN", true);
+            commit("SET_IS_LOGIN_ERROR", false);
+            commit("SET_IS_VALID_TOKEN", true);
+            sessionStorage.setItem("access-token", accessToken);
+          } else {
+            commit("SET_IS_LOGIN", false);
+            commit("SET_IS_LOGIN_ERROR", true);
+            commit("SET_IS_VALID_TOKEN", false);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async getUserInfo({ commit, dispatch }, token) {
+      let decodeToken = jwtDecode(token);
+      // console.log("2. getUserInfo() decodeToken :: ", decodeToken);
+      await findById(
+        decodeToken.email,
+        ({ data }) => {
+          if (data.message === "SUCCESS") {
+            commit("SET_USER_INFO", data.userInfo);
+            // console.log("3. getUserInfo data >> ", data);
+          } else {
+            console.log("유저 정보 없음!!!!");
+          }
+        },
+        async (error) => {
+          console.log("getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
+          commit("SET_IS_VALID_TOKEN", false);
+          await dispatch("tokenRegeneration");
+        }
+      );
+    },
+    async userLogout({ commit }) {
+      commit("SET_IS_LOGIN", false);
+      commit("SET_USER_INFO", null);
+      commit("SET_IS_VALID_TOKEN", false);
+    },
   },
 };
 

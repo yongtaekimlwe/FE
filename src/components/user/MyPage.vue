@@ -3,25 +3,15 @@
     <div class="row justify-content-center">
       <b-avatar id="avatar" :src="userInfo.imgSrc" size="7rem"></b-avatar>
     </div>
+    <div id="profileChange" v-if="!modify">프로필 이미지 변경</div>
     <div class="login">
       <b-form id="login" method="get">
-        <div class="row justify-content-center">
-          <input
-            v-if="userInfo.password"
-            :disabled="!modify"
-            type="text"
-            id="Uid"
-            placeholder="아이디"
-            v-model="userInfo.id"
-          />
-        </div>
         <div class="row justify-content-center">
           <input
             :disabled="!modify"
             type="email"
             id="email"
             placeholder="이메일"
-            v-mod
             v-model="userInfo.email"
           />
         </div>
@@ -91,7 +81,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import { update, deleteUser } from "@/api/user";
 
 const userStore = "userStore";
 
@@ -103,18 +94,22 @@ export default {
     };
   },
   methods: {
+    ...mapActions(userStore, ["userLogout"]),
     toggleStat() {
       this.modify = !this.modify;
     },
-    userCheck() {
-      //TODO: 사용자 비밀번호가 맞는지 확인하기
-    },
     userUpdate() {
+      update({
+        id: this.userInfo.id,
+        password: this.userInfo.password,
+        name: this.userInfo.name,
+        email: this.userInfo.email,
+      });
       this.toggleStat();
-      // TODO: 사용자 정보 update하기
     },
     quitUser() {
-      // TODO: 회원 탈퇴
+      deleteUser(this.userInfo.id);
+      this.logout();
       this.$router.push("/").catch(() => {});
     },
     // 모달 관련 함수
@@ -128,8 +123,8 @@ export default {
       this.handleSubmit();
     },
     handleSubmit() {
-      // TODO: 비밀번호 일치하는지 보기
-      if (this.checkPassword == this.password) {
+      // console.log(this.userInfo);
+      if (this.checkPassword == this.userInfo.password) {
         this.toggleStat();
       }
       // Push the name to submitted names
@@ -138,6 +133,9 @@ export default {
       this.$nextTick(() => {
         this.$bvModal.hide("modal-prevent-closing");
       });
+    },
+    logout() {
+      this.userLogout();
     },
   },
   computed: {
@@ -158,6 +156,10 @@ a:visited {
 
 #app {
   padding: 10%;
+}
+
+#avatar {
+  margin-bottom: 5px;
 }
 
 .login {
@@ -209,6 +211,11 @@ a:visited {
 
 #kakaoUser {
   color: rgb(109, 109, 109);
+}
+
+#profileChange {
+  color: rgb(109, 109, 109);
+  margin-bottom: 5px;
 }
 
 #quit {
