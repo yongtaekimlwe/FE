@@ -15,18 +15,6 @@
               {{ this.data.content }}
             </b-card-text>
             <tag-list-detail :tags="this.data.hashtags"></tag-list-detail>
-            <!-- <div class="tag-container">
-              <b-badge
-                v-for="tag in this.data.tags"
-                :key="tag.id"
-                href="#"
-                variant="dark"
-                :menu_icon_src="tag.menu_icon_src"
-                class="tag-item"
-              >
-                {{ tag.menu_desc }}
-              </b-badge>
-            </div> -->
             <div class="heart-container">
               <font-awesome-icon
                 icon="heart"

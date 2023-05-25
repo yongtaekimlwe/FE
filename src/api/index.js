@@ -22,4 +22,14 @@ function pictureInstance() {
   return instance;
 }
 
-export { userInstance, pictureInstance };
+function hashtagInstance() {
+  const instance = axios.create({
+    baseURL: process.env.VUE_APP_HASHTAG_BASE_URL,
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+  return instance;
+}
+
+export { userInstance, pictureInstance, hashtagInstance };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tag-item-wrapper">
-      <div v-for="tag in tags" :key="tag.id">
+      <div v-for="tag in hashtags" :key="tag.id">
         <tag-item
           class="col-3"
           :menu_icon_src="tag.tagIcon"
@@ -34,7 +34,7 @@
             img-top
           >
             <b-card-body
-              ><tag-list-detail :tags="tags"></tag-list-detail
+              ><tag-list-detail :tags="picture.hashtags"></tag-list-detail
             ></b-card-body>
             <template #footer>
               <small class="text-muted"> Liked: 3 </small>
@@ -50,6 +50,7 @@
 import { getPictures } from "@/api/picture";
 import TagItem from "@/components/common/TagItem.vue";
 import TagListDetail from "../common/TagListDetail.vue";
+import { getHashtags } from "@/api/hashtag";
 
 export default {
   name: "PictureList",
@@ -57,16 +58,7 @@ export default {
   data() {
     return {
       message: "Picture List",
-      tags: [
-        { tagIcon: "fa-umbrella-beach", tagName: "바다" },
-        { tagIcon: "fa-umbrella-beach", tagName: "산" },
-        { tagIcon: "fa-route", tagName: "가족과 함께" },
-        { tagIcon: "fa-route", tagName: "연인과 함께" },
-        { tagIcon: "fa-route", tagName: "호캉스" },
-        { tagIcon: "fa-route", tagName: "촌캉스" },
-        { tagIcon: "fa-route", tagName: "액티비티" },
-        { tagIcon: "fa-route", tagName: "힐링" },
-      ],
+      hashtags: [],
       pictures: [],
     };
   },
@@ -74,6 +66,15 @@ export default {
     getPictures(
       ({ data }) => {
         this.pictures = data.pictures;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    getHashtags(
+      ({ data }) => {
+        this.hashtags = data.hashtags;
       },
       (error) => {
         console.log(error);
