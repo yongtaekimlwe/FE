@@ -57,7 +57,6 @@ const memberStore = {
       await login(
         user,
         ({ data }) => {
-          console.log(data);
           if (data.message === "SUCCESS") {
             let accessToken = data["access-token"];
             // console.log("login success token created!!!! >> ", accessToken);

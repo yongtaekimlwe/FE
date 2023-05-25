@@ -19,4 +19,12 @@ async function findById(userId, success, fail) {
   await user.get(`/info/${userId}`).then(success).catch(fail);
 }
 
-export { kakaoLogin, join, login, findById };
+async function update(loginUser, success, fail) {
+  await user.post(`/update`, JSON.stringify(loginUser)).then(success).catch(fail);
+}
+
+async function deleteUser(userId, success, fail) {
+  await user.delete(`/${userId}`).then(success).catch(fail);
+}
+
+export { kakaoLogin, join, login, findById, update, deleteUser };

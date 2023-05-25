@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { login } from "@/api/user";
+import { join } from "@/api/user";
 
 export default {
   data() {
@@ -36,10 +36,11 @@ export default {
     regist() {
       var user = { password: this.password, name: this.userName, email: this.email };
 
-      login(
+      join(
         user,
         (success) => {
           console.log(success);
+          this.$router.push({ name: "login" });
         },
         (fail) => {
           console.log(fail);
