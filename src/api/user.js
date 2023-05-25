@@ -7,9 +7,9 @@ async function kakaoLogin(code, success, fail) {
     await user.get(`/kakao/token?code=${code}`).then(success).catch(fail);
 }
 
-// async function login(user, success, fail) {
-//   await api.post(`/user/login`, JSON.stringify(user)).then(success).catch(fail);
-// }
+async function login(newUser, success, fail) {
+    await user.post(`/join`, JSON.stringify(newUser)).then(success).catch(fail);
+}
 
 // async function findById(userid, success, fail) {
 //   api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
@@ -25,4 +25,4 @@ async function kakaoLogin(code, success, fail) {
 //   await api.get(`/user/logout/${userid}`).then(success).catch(fail);
 // }
 
-export { kakaoLogin };
+export { kakaoLogin, login };

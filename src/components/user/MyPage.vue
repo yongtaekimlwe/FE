@@ -7,16 +7,6 @@
       <b-form id="login" method="get">
         <div class="row justify-content-center">
           <input
-            v-if="userInfo.password"
-            :disabled="!modify"
-            type="text"
-            id="Uid"
-            placeholder="아이디"
-            v-model="userInfo.id"
-          />
-        </div>
-        <div class="row justify-content-center">
-          <input
             :disabled="!modify"
             type="email"
             id="email"
