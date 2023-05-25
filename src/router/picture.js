@@ -16,7 +16,7 @@ const routes = [
         component: () => import("@/components/picture/PicturePost"),
       },
       {
-        path: "detail/:id",
+        path: "detail/:imageId",
         name: "picturedetail",
         component: () => import("@/components/picture/PictureDetail"),
       },
