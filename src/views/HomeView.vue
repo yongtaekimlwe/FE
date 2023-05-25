@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- 메뉴 이동 -->
-    <div id="menu" class="row">
+    <div class="tag-item-wrapper">
       <router-link :to="{ name: 'attraction' }">
         <tag-item
           class="col-3"
@@ -10,7 +10,11 @@
         ></tag-item>
       </router-link>
       <router-link :to="{ name: 'routeList' }">
-        <tag-item class="col-3" menu_icon_src="fa-route" menu_desc="여행 경로"></tag-item>
+        <tag-item
+          class="col-3"
+          menu_icon_src="fa-route"
+          menu_desc="여행 경로"
+        ></tag-item>
       </router-link>
       <router-link :to="{ name: 'picture' }"
         ><tag-item
@@ -20,11 +24,13 @@
         >
         </tag-item
       ></router-link>
-      <tag-item
-        class="col-3"
-        menu_icon_src="fa-solid fa-database"
-        menu_desc="추억 공유"
-      ></tag-item>
+      <router-link :to="{ name: 'picture' }">
+        <tag-item
+          class="col-3"
+          menu_icon_src="fa-solid fa-database"
+          menu_desc="추억 공유"
+        ></tag-item>
+      </router-link>
     </div>
     <!-- carousel -->
     <br />
@@ -83,5 +89,11 @@ export default {
 }
 .banner video {
   width: 100%;
+}
+
+.tag-item-wrapper {
+  display: block;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
 }
 </style>

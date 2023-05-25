@@ -12,11 +12,9 @@
             <div class="commentItem_commentInfo__5KL0S">
               <div class="commentItem_title__36t1w">
                 <div class="commentItem_userNickname__PQ8kV">
-                  {{ comment.userId }}
+                  {{ comment.nickname }}
+                  {{ new Date(...comment.createdAt).toLocaleString() }}
                 </div>
-                <!-- <div class="commentItem_registeredDate__2TPJZ">
-                  2021-08-07 22:48:54
-                </div> -->
               </div>
             </div>
           </div>
@@ -25,6 +23,14 @@
           <p class="commentItem_commentContent__1yK7o">
             {{ comment.content }}
           </p>
+          <b-button
+            v-if="comment.nickname === userInfo.name"
+            variant="outline-secondary"
+            class="btn-sm float-right"
+            @click="deleteCommentById(comment.commentId)"
+          >
+            댓글 삭제
+          </b-button>
         </section>
       </li>
     </ul>
@@ -32,6 +38,9 @@
 </template>
 
 <script>
+import { deleteComment } from "@/api/picture";
+import { mapState, mapActions } from "vuex";
+const userStore = "userStore";
 export default {
   name: "CommentList",
   components: {},
@@ -41,8 +50,22 @@ export default {
   data() {
     return {};
   },
-  created() {},
-  methods: {},
+  created() {
+    console.log(this.comments);
+  },
+  methods: {
+    ...mapActions(userStore, ["userLogout"]),
+    deleteCommentById(id) {
+      deleteComment(id)
+        .then(() => location.reload())
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
 };
 </script>
 
