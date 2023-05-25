@@ -27,7 +27,10 @@ import SelectTag from "@/components/picture/item/SelectTag.vue";
 import InputTitle from "@/components/picture/item/InputTitle.vue";
 import InputFile from "@/components/picture/item/InputFile.vue";
 import AWS from "aws-sdk";
-import { postPictureBoard } from "@/api/picture";
+import { postPictureBoard, updatePictureBoard } from "@/api/picture";
+import { mapState, mapActions } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   name: "PicturePost",
@@ -60,6 +63,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions(userStore, ["userLogout"]),
     handleTagChange(selectedTags) {
       this.selectedTags = selectedTags;
     },
@@ -110,18 +114,24 @@ export default {
       var promise = upload.promise();
       promise.then(
         function (data) {
-          console.log("succes");
-          console.log(data.Location);
-
-          postPictureBoard({
-            userId: 1,
+          const pictureBoard = {
+            userId: vm.userInfo.id,
             title: vm.title,
             content: vm.content,
             hashtags: vm.hashtags,
             imageUrl: data.Location,
-          })
-            .then(() => vm.$router.go(-1))
-            .catch((error) => console.log(error));
+          };
+          console.log(vm.$route.name);
+          console.log(pictureBoard);
+          if (vm.$route.name === "picturepost") {
+            postPictureBoard(pictureBoard)
+              .then(() => vm.$router.go(-1))
+              .catch((error) => console.log(error));
+          } else {
+            updatePictureBoard(vm.id, pictureBoard)
+              .then(() => vm.$router.go(-1))
+              .catch((error) => console.log(error));
+          }
         },
         function (err) {
           console.log("There was an error uploading photo", err.message);
@@ -136,6 +146,9 @@ export default {
         this.content === ""
       );
     },
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
   },
 };
 </script>

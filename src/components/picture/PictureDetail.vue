@@ -2,16 +2,18 @@
   <div>
     <div>
       <picture-description :data="this.picture"></picture-description>
-      <input-comment :imageId="this.imageId"></input-comment>
+      <input-comment :data="info"></input-comment>
       <comment-list :comments="comments"></comment-list>
     </div>
     <b-button
+      v-if="picture.userId === userInfo.id"
       variant="outline-secondary"
       class="button-right"
       @click="updatePost"
       >글 수정</b-button
     >
     <b-button
+      v-if="picture.userId === userInfo.id"
       variant="outline-secondary"
       class="button-right"
       @click="deletePost"
@@ -25,6 +27,9 @@ import CommentList from "@/components/picture/item/CommentList.vue";
 import InputComment from "@/components/picture/item/InputComment.vue";
 import PictureDescription from "@/components/picture/item/PictureDescription.vue";
 import { getPictureDetail, getPictureCommentsByImageId } from "@/api/picture";
+import { mapState, mapActions } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   name: "PictureDetail",
@@ -35,10 +40,13 @@ export default {
       title: "",
       picture: {},
       comments: [],
+      info: {},
     };
   },
   created() {
     this.imageId = this.$route.params.imageId;
+    this.info["imageId"] = this.imageId;
+    this.info["userId"] = this.userInfo.id;
     getPictureDetail(
       this.imageId,
       ({ data }) => {
@@ -51,6 +59,7 @@ export default {
     getPictureCommentsByImageId(
       this.imageId,
       ({ data }) => {
+        console.log(data);
         this.comments = data.comments;
       },
       (error) => {
@@ -59,6 +68,7 @@ export default {
     );
   },
   methods: {
+    ...mapActions(userStore, ["userLogout"]),
     updatePost() {
       if (confirm("수정하시겠습니까?")) {
         this.$router.replace({
@@ -75,6 +85,9 @@ export default {
         });
       }
     },
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
   },
 };
 </script>

@@ -24,7 +24,7 @@ export default {
   name: "InputComment",
   components: {},
   props: {
-    imageId: Number,
+    data: {},
   },
   data() {
     return {
@@ -34,8 +34,8 @@ export default {
   created() {},
   methods: {
     postCommentByText() {
-      postComment(this.imageId, {
-        userId: 1,
+      postComment(this.data.imageId, {
+        userId: this.data.userId,
         comment: this.comment,
       })
         .then(() => location.reload())
