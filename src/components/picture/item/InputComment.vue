@@ -3,9 +3,14 @@
     <textarea
       class="commentInput_commentText__2er8t"
       placeholder="댓글을 입력하세요."
+      v-model="comment"
     ></textarea>
     <div class="commentInput_buttonWrapper__2f_l9">
-      <button class="commentInput_buttonComplete__24z4R" name="register">
+      <button
+        class="commentInput_buttonComplete__24z4R"
+        name="register"
+        @click="postCommentByText()"
+      >
         댓글 등록
       </button>
     </div>
@@ -13,14 +18,30 @@
 </template>
 
 <script>
+import { postComment } from "@/api/picture";
+
 export default {
   name: "InputComment",
   components: {},
+  props: {
+    imageId: Number,
+  },
   data() {
-    return {};
+    return {
+      comment: "",
+    };
   },
   created() {},
-  methods: {},
+  methods: {
+    postCommentByText() {
+      postComment(this.imageId, {
+        userId: 1,
+        comment: this.comment,
+      })
+        .then(() => location.reload())
+        .catch((error) => console.log(error));
+    },
+  },
 };
 </script>
 

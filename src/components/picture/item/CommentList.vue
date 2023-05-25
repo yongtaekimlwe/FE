@@ -12,11 +12,9 @@
             <div class="commentItem_commentInfo__5KL0S">
               <div class="commentItem_title__36t1w">
                 <div class="commentItem_userNickname__PQ8kV">
-                  {{ comment.userId }}
+                  {{ comment.nickname }}
+                  {{ new Date(...comment.createdAt).toLocaleString() }}
                 </div>
-                <!-- <div class="commentItem_registeredDate__2TPJZ">
-                  2021-08-07 22:48:54
-                </div> -->
               </div>
             </div>
           </div>
