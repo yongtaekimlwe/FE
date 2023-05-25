@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     <!-- hashtag -->
     <div class="tag-item-wrapper">
       <div v-for="tag in tags" :key="tag.id">
@@ -13,12 +13,12 @@
 
     <!-- 새로 만들기 -->
     <br />
-    <div id="buttons">
+    <div id="buttons" class="row justify-content-end">
       <b-button id="delete" variant="outline-dark" @click="doCreate()">새로 만들기</b-button>
     </div>
 
-    <!-- TODO: 여행 경로 확인하기 -->
     <br />
+    <!-- 여행 아이템 -->
     <b-container id="route">
       <div class="route-item-wrapper">
         <div v-for="route in routes" :key="route.routeId">
@@ -27,8 +27,8 @@
               :routeId="route.routeId"
               :userName="route.userName"
               :title="route.title"
-              :tags="route.tags"
-              :likes="route.like"
+              :tags="route.hashtags"
+              :likes="route.likes"
             ></route-list-item>
           </router-link>
         </div>
@@ -40,6 +40,7 @@
 <script>
 import TagItem from "../common/TagItem";
 import RouteListItem from "@/components/route/item/RouteListItem";
+import { getAllRoutes } from "@/api/route";
 
 export default {
   name: "RouteList",
@@ -59,59 +60,7 @@ export default {
         { menu_icon_src: "fa-route", menu_desc: "액티비티" },
         { menu_icon_src: "fa-route", menu_desc: "힐링" },
       ],
-      routes: [
-        {
-          routeId: 1,
-          userName: "박예한",
-          title: "부산 여행 계획 길이가 더더더더더더 길면",
-          tags: [
-            { menu_icon_src: "fa-umbrella-beach", menu_desc: "바다" },
-            { menu_icon_src: "fa-route", menu_desc: "가족과 함께" },
-          ],
-          like: 3,
-        },
-        {
-          routeId: 2,
-          userName: "박예한",
-          title: "부산 여행 계획",
-          tags: [
-            { menu_icon_src: "fa-umbrella-beach", menu_desc: "바다" },
-            { menu_icon_src: "fa-route", menu_desc: "가족과 함께" },
-          ],
-          like: 3,
-        },
-        {
-          routeId: 3,
-          userName: "박예한",
-          title: "부산 여행 계획",
-          tags: [
-            { menu_icon_src: "fa-umbrella-beach", menu_desc: "바다" },
-            { menu_icon_src: "fa-route", menu_desc: "가족과 함께" },
-            { menu_icon_src: "fa-route", menu_desc: "힐링" },
-          ],
-          like: 3,
-        },
-        {
-          routeId: 4,
-          userName: "박예한",
-          title: "부산 여행 계획",
-          tags: [
-            { menu_icon_src: "fa-umbrella-beach", menu_desc: "바다" },
-            { menu_icon_src: "fa-route", menu_desc: "가족과 함께" },
-          ],
-          like: 3,
-        },
-        {
-          routeId: 5,
-          userName: "박예한",
-          title: "부산 여행 계획",
-          tags: [
-            { menu_icon_src: "fa-umbrella-beach", menu_desc: "바다" },
-            { menu_icon_src: "fa-route", menu_desc: "가족과 함께" },
-          ],
-          like: 3,
-        },
-      ],
+      routes: [],
     };
   },
   methods: {
@@ -122,6 +71,15 @@ export default {
   created() {
     // TODO: axios로 tag item 가져오기
     // TODO: axios로 여행 경로 게시글 item 가져오기
+    getAllRoutes(
+      ({ data }) => {
+        console.log(data);
+        this.routes = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
 };
 </script>

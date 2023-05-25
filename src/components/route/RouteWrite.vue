@@ -1,85 +1,95 @@
 <template>
-  <b-container id="app">
-    <br />
-    <b-row>
-      <!-- 지도 -->
-      <b-col id="map" md="8">
-        <map-item></map-item>
-      </b-col>
-      <b-col md="4">
-        <div id="blank"></div>
-        <b-row>
-          <!-- 태그 -->
+  <div id="app" class="container">
+    <div>
+      <br />
+      <!-- 제목 -->
+      <section>
+        <middle-title :input="firstTitle"></middle-title>
+        <input-title v-model="title"></input-title>
+      </section>
+      <!-- 태그 -->
+      <section>
+        <select-tag @handleTagChange="handleTagChange"></select-tag>
+      </section>
+      <br />
+      <!-- 소개글 -->
+      <section>
+        <middle-title :input="secondTitle"></middle-title>
+        <input-content v-model="content"></input-content>
+      </section>
+      <br />
+      <!-- 여행지 아이템 -->
+      <section>
+        <middle-title :input="thirdTitle"></middle-title>
+        <b-row class="justify-content-end">
+          <add-item-modal add="addAttraction"></add-item-modal>
         </b-row>
-        <br />
-        <!-- 제목 -->
-        <div>
-          <b-form-input v-model="this.title" placeholder="제목을 입력하세요."></b-form-input>
-        </div>
-        <br />
-        <!-- 소개글 -->
-        <div>
-          <b-form-textarea
-            id="textarea"
-            v-model="this.content"
-            placeholder="간단한 소개글을 작성해 주세요."
-            rows="3"
-            max-rows="3"
-          ></b-form-textarea>
-        </div>
-        <br />
-        <!-- 여행지 아이템 -->
-        <div>
-          <b-row class="justify-content-end">
-            <add-item-modal add="addAttraction"></add-item-modal>
-          </b-row>
-          <div id="plan">
-            <draggable v-model="plans" draggable=".plans">
-              <div v-for="item in plans" :key="item.order" class="plans">
-                <route-attraction-item
-                  :addr="item.addr"
-                  :simple_desc="item.simpleDesc"
-                ></route-attraction-item>
-              </div>
-            </draggable>
+      </section>
+
+      <div id="plan">
+        <draggable v-model="plans" draggable=".plans">
+          <div v-for="item in plans" :key="item.order" class="plans">
+            <route-attraction-item
+              :addr="item.addr"
+              :simple_desc="item.simpleDesc"
+            ></route-attraction-item>
           </div>
-        </div>
-        <!-- 저장 버튼 -->
-        <!-- TODO: 여행 경로 저장하기 -->
-        <b-button id="save" variant="outline-dark">저장</b-button>
-      </b-col>
-    </b-row>
-  </b-container>
+        </draggable>
+      </div>
+    </div>
+    <!-- 지도 -->
+    <br />
+    <section id="map" class="row">
+      <map-item></map-item>
+    </section>
+    <!-- 저장 버튼 -->
+    <section>
+      <b-button id="save" variant="outline-dark">저장</b-button>
+    </section>
+  </div>
 </template>
 
 <script>
 import MapItem from "./item/MapItem.vue";
 import AddItemModal from "@/components/route/item/AddItemModal.vue";
 import RouteAttractionItem from "./item/RouteAttractionItem.vue";
+import SelectTag from "@/components/picture/item/SelectTag.vue";
+import Draggable from "vuedraggable";
+import MiddleTitle from "@/components/common/MiddleTitle.vue";
+import InputTitle from "@/components/picture/item/InputTitle.vue";
+import InputContent from "../picture/item/InputContent.vue";
 
 export default {
   components: {
     MapItem,
     AddItemModal,
     RouteAttractionItem,
+    SelectTag,
+    Draggable,
+    MiddleTitle,
+    InputTitle,
+    InputContent,
   },
   data() {
     return {
+      firstTitle: "제목을 입력하고 태그들을 선택해주세요",
+      secondTitle: "소개글을 입력해주세요",
+      thirdTitle: "여행지를 선택하세요",
       title: "",
-      content: "",
-      tags: [],
       selectedTags: [],
+      content: "",
       plans: [],
     };
+  },
+  methods: {
+    handleTagChange(selectedTags) {
+      this.selectedTags = selectedTags;
+    },
   },
 };
 </script>
 
 <style scoped>
-#app {
-  position: relative;
-}
-
 #map {
   height: 38vw;
 }
@@ -100,11 +110,5 @@ export default {
   width: 8%;
   height: 5%;
   font-weight: bold;
-}
-
-#save {
-  position: absolute;
-  bottom: 0px;
-  right: 10%;
 }
 </style>
