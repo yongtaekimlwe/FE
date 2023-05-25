@@ -10,17 +10,17 @@
         <div class="row">
           <div id="blank"></div>
           <!-- 태그 -->
-          <div id="tag" v-for="(tag, index) in tags" :key="index">
-            <tag-item :menu_icon_src="tag.menu_icon_src" :menu_desc="tag.menu_desc"></tag-item>
+          <div id="tag" v-for="(tag, index) in hashtags" :key="index">
+            <tag-item :menu_icon_src="tag.tagIcon" :menu_desc="tag.tagName"></tag-item>
           </div>
           <!-- 사람 -->
           <!-- TODO: 참여자인지 아닌지에 따라 하트 or 참여자 목록 보기 -->
-          <div id="people" v-if="true">
+          <div id="people" v-if="userName === userInfo.name">
             <b-avatar-group size="2rem" id="people-group">
               <b-avatar
                 v-for="(person, index) in filterdPeople"
                 :key="index"
-                :src="person.src"
+                :src="person.imgSrc"
               ></b-avatar>
             </b-avatar-group>
             <!-- 참여하는 모든 사람 보기 -->
@@ -28,10 +28,10 @@
               <b-list-group>
                 <b-list-group-item
                   class="d-flex align-items-center"
-                  v-for="(person, index) in people"
+                  v-for="(person, index) in friends"
                   :key="index"
                 >
-                  <b-avatar class="mr-2" :src="person.src"></b-avatar>
+                  <b-avatar class="mr-2" :src="person.imgSrc"></b-avatar>
                   <div>
                     <div id="person-name">{{ person.name }}</div>
                     <div>{{ person.email }}</div>
@@ -39,10 +39,7 @@
                 </b-list-group-item>
               </b-list-group>
               <!-- 멤버 추가하기 -->
-              <!-- TODO: 글 작성자라면 멤버를 추가할 수 있도록 -->
-              <div v-if="true">
-                <add-item-modal add="addMember"></add-item-modal>
-              </div>
+              <add-item-modal add="addMember" :routeId="routeId"></add-item-modal>
             </b-tooltip>
           </div>
           <div class="heart" v-else>
@@ -80,7 +77,7 @@
         </div>
         <!-- 수정 삭제 버튼 -->
         <!-- TODO: 작성자인지 아닌지에 따라 수정, 삭제 가능 여부 변경-->
-        <div id="buttons" class="row justify-content-end" v-if="true">
+        <div id="buttons" class="row justify-content-end" v-if="userName == userInfo.name">
           <b-button id="modify" variant="outline-dark" @click="doModify()">수정</b-button>
           &nbsp;
           <b-button id="delete" variant="outline-dark" @click="doDelete()">삭제</b-button>
@@ -91,15 +88,19 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
+import Draggable from "vuedraggable";
 import MapItem from "@/components/route/item/MapItem.vue";
 import TagItem from "../common/TagItem.vue";
 import AddItemModal from "@/components/route/item/AddItemModal.vue";
 import RouteAttractionItem from "@/components/route/item/RouteAttractionItem.vue";
+import { getRoute } from "@/api/route";
+import { mapState } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   components: {
-    draggable,
+    Draggable,
     MapItem,
     TagItem,
     AddItemModal,
@@ -107,38 +108,13 @@ export default {
   },
   data() {
     return {
-      routeId: "",
-      people: [
-        {
-          name: "민지",
-          src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy1guYM__zMkuh98K9iEx3kivS4VKuOuUapA&usqp=CAU",
-          email: "minji@ssafy.com",
-        },
-        {
-          name: "하니",
-          src: "https://i.namu.wiki/i/pWjwjQ8g8PHy37F-IQvM0qmUH6-NhCH0mLeMGrBArerxV_eATwJT_7rgdHcUhWZrRWG-TF7nMY7BiD0YSu5Tbg.webp",
-          email: "hani@ssafy.com",
-        },
-        {
-          name: "안유진",
-          src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyt1L4ehWnB3ETLc_7dG7pzoq3av0EYmIc0g&usqp=CAU",
-          email: "yujin@ssafy.com",
-        },
-        {
-          name: "카즈하",
-          src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAslJ3B-tcuQK3WcAgqJWwjb4ZyDOKxbIEGw&usqp=CAU",
-          email: "kazuha@ssafy.com",
-        },
-      ],
+      friends: [],
       newFriendEmail: "",
-      tags: [
-        { menu_icon_src: "fa-umbrella-beach", menu_desc: "바다" },
-        { menu_icon_src: "fa-route", menu_desc: "가족과 함께" },
-      ],
-      title: "[0603-0608] 부산 여행 계획",
-      userName: "박예한",
-      content: "부산에 가려고 합니다. 물떡도 먹고 서핑도 하고 등산도 하고 재밌게 놀 예정~",
-      likes: 3,
+      title: "",
+      content: "",
+      userName: "",
+      likes: "",
+      hashtags: [],
       plans: [
         {
           day: 1,
@@ -148,62 +124,43 @@ export default {
           latitude: "129.158109075138",
           logtitude: "35.1628906355142",
         },
-        {
-          day: 1,
-          order: 2,
-          simpleDesc: "감천문화마을",
-          addr: "부산 사하구 감내1로 200",
-          latitude: "129.009426440728",
-          logtitude: "35.0962593359206",
-        },
-        {
-          day: 2,
-          order: 3,
-          simpleDesc: " 해운대블루라인파크",
-          addr: "부산 해운대구 달맞이길62번길 1",
-          latitude: "129.171510713128",
-          logtitude: "35.1609046409049",
-        },
-        {
-          day: 2,
-          order: 4,
-          simpleDesc: "롯데월드 어드벤처 부산",
-          addr: "부산 기장군 기장읍 동부산관광로 42",
-          latitude: "129.213206917811",
-          logtitude: "35.1960618136802",
-        },
-        {
-          day: 2,
-          order: 5,
-          simpleDesc: "허심청",
-          addr: "부산 동래구 온천장로107번길 32",
-          latitude: "129.082686623437",
-          logtitude: "35.2211550981779",
-        },
       ],
     };
   },
   methods: {
     doModify() {
-      this.$router.replace({
-        name: "routeModify",
-        params: { routeId: this.routeId },
-      });
+      // this.$router.replace({
+      //   name: "routeModify",
+      //   params: { routeId: this.routeId },
+      // });
     },
     doDelete() {
       // TODO: 삭제하기 API
       this.$router.push({ name: "routeList" });
     },
   },
-  created: {
-    // TODO: axios로 게시글 상세 정보 가져오기
-    // 1) 지도
-    // 2) 참여하는 사람 정보(people 배열)
-    // 3) 태그
+  created() {
+    this.routeId = this.$route.params.routeId;
+    getRoute(
+      this.routeId,
+      ({ data }) => {
+        console.log(data);
+        this.friends = data.participants;
+        this.title = data.title;
+        this.content = data.content;
+        this.userName = data.userName;
+        this.likes = data.likes;
+        this.hashtags = data.hashtags;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   },
   computed: {
+    ...mapState(userStore, ["userInfo"]),
     filterdPeople() {
-      return this.people.slice(0, 3);
+      return this.friends.slice(0, 3);
     },
   },
 };
@@ -216,6 +173,7 @@ export default {
 
 #map {
   height: 38vw;
+  border-radius: 10%;
 }
 
 #blank {
