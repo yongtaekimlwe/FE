@@ -11,6 +11,17 @@ function userInstance() {
   return instance;
 }
 
+// 여행 경로
+function routeInstance() {
+  const instance = axios.create({
+      baseURL: process.env.VUE_APP_ROUTE_BASE_URL,
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    });
+    
+    return instance;
+  
 // 사진공유 관련
 function pictureInstance() {
   const instance = axios.create({
@@ -32,4 +43,5 @@ function hashtagInstance() {
   return instance;
 }
 
-export { userInstance, pictureInstance, hashtagInstance };
+
+export { userInstance, routeInstance, pictureInstance, hashtagInstance  };

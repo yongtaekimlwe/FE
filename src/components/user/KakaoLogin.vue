@@ -28,13 +28,6 @@ export default {
 
     async kakaoLogin() {
       await this.userKakaoLogin(this.code);
-      //   await http.get(`/user/kakao/token?code=${this.code}`).then(({ data }) => {
-      //     console.log(data);
-
-      //     // TODO: vuex에 저장하기
-
-      //     this.$router.push({ name: "home" });
-      //   });
     },
   },
 };
