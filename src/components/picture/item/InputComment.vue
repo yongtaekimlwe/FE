@@ -1,12 +1,14 @@
 <template>
   <div class="commentInput_commentInput__39H41">
     <textarea
+      v-if="userInfo"
       class="commentInput_commentText__2er8t"
       placeholder="댓글을 입력하세요."
       v-model="comment"
     ></textarea>
     <div class="commentInput_buttonWrapper__2f_l9">
       <button
+        v-if="userInfo"
         class="commentInput_buttonComplete__24z4R"
         name="register"
         @click="postCommentByText()"
@@ -19,6 +21,8 @@
 
 <script>
 import { postComment } from "@/api/picture";
+import { mapState } from "vuex";
+const userStore = "userStore";
 
 export default {
   name: "InputComment",
@@ -35,12 +39,15 @@ export default {
   methods: {
     postCommentByText() {
       postComment(this.data.imageId, {
-        userId: this.data.userId,
+        userId: this.userInfo.id,
         comment: this.comment,
       })
         .then(() => location.reload())
         .catch((error) => console.log(error));
     },
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
   },
 };
 </script>

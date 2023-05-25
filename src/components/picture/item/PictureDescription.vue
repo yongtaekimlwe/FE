@@ -7,6 +7,8 @@
             :src="this.data.imageUrl"
             alt="Image"
             class="rounded-0"
+            width="500"
+            height="500"
           ></b-card-img>
         </b-col>
         <b-col md="6">

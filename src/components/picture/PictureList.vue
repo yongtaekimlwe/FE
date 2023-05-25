@@ -35,6 +35,8 @@
             :img-src="picture.imageUrl"
             img-alt="Image"
             img-top
+            img-width="500"
+            img-height="300"
           >
             <b-card-body
               ><tag-list-detail :tags="picture.hashtags"></tag-list-detail

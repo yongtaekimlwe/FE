@@ -24,7 +24,7 @@
             {{ comment.content }}
           </p>
           <b-button
-            v-if="comment.nickname === userInfo.name"
+            v-if="userInfo && comment.nickname === userInfo.name"
             variant="outline-secondary"
             class="btn-sm float-right"
             @click="deleteCommentById(comment.commentId)"
@@ -50,9 +50,7 @@ export default {
   data() {
     return {};
   },
-  created() {
-    console.log(this.comments);
-  },
+  created() {},
   methods: {
     ...mapActions(userStore, ["userLogout"]),
     deleteCommentById(id) {
