@@ -2,18 +2,18 @@
   <div>
     <div>
       <picture-description :data="this.picture"></picture-description>
-      <input-comment :data="info"></input-comment>
+      <input-comment :data="data"></input-comment>
       <comment-list :comments="comments"></comment-list>
     </div>
     <b-button
-      v-if="picture.userId === userInfo.id"
+      v-if="userInfo && picture.userId === userInfo.id"
       variant="outline-secondary"
       class="button-right"
       @click="updatePost"
       >글 수정</b-button
     >
     <b-button
-      v-if="picture.userId === userInfo.id"
+      v-if="userInfo && picture.userId === userInfo.id"
       variant="outline-secondary"
       class="button-right"
       @click="deletePost"
@@ -27,7 +27,7 @@ import CommentList from "@/components/picture/item/CommentList.vue";
 import InputComment from "@/components/picture/item/InputComment.vue";
 import PictureDescription from "@/components/picture/item/PictureDescription.vue";
 import { getPictureDetail, getPictureCommentsByImageId } from "@/api/picture";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 
 const userStore = "userStore";
 
@@ -36,7 +36,7 @@ export default {
   components: { PictureDescription, InputComment, CommentList },
   data() {
     return {
-      imageId: "",
+      data: {},
       title: "",
       picture: {},
       comments: [],
@@ -44,11 +44,10 @@ export default {
     };
   },
   created() {
-    this.imageId = this.$route.params.imageId;
-    this.info["imageId"] = this.imageId;
-    this.info["userId"] = this.userInfo.id;
+    this.data["imageId"] = this.$route.params.imageId;
+
     getPictureDetail(
-      this.imageId,
+      this.data.imageId,
       ({ data }) => {
         this.picture = data;
       },
@@ -57,7 +56,7 @@ export default {
       }
     );
     getPictureCommentsByImageId(
-      this.imageId,
+      this.data.imageId,
       ({ data }) => {
         console.log(data);
         this.comments = data.comments;
@@ -73,7 +72,7 @@ export default {
       if (confirm("수정하시겠습니까?")) {
         this.$router.replace({
           name: "pictureupdate",
-          params: { id: this.imageId },
+          params: { id: this.data.imageId },
         });
       }
     },
@@ -81,7 +80,7 @@ export default {
       if (confirm("정말로 삭제하시겠습니까?")) {
         this.$router.replace({
           name: "picturedelete",
-          params: { id: this.imageId },
+          params: { id: this.data.imageId },
         });
       }
     },
