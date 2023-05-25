@@ -40,6 +40,7 @@ export default {
       title: "",
       picture: {},
       comments: [],
+      info: {},
     };
   },
   created() {
@@ -57,6 +58,7 @@ export default {
     getPictureCommentsByImageId(
       this.data.imageId,
       ({ data }) => {
+        console.log(data);
         this.comments = data.comments;
       },
       (error) => {
@@ -65,6 +67,7 @@ export default {
     );
   },
   methods: {
+    ...mapActions(userStore, ["userLogout"]),
     updatePost() {
       if (confirm("수정하시겠습니까?")) {
         this.$router.replace({
