@@ -4,9 +4,11 @@
       <b-row no-gutters>
         <b-col md="6">
           <b-card-img
-            src="https://picsum.photos/300/150/?image=41"
+            :src="this.data.imageUrl"
             alt="Image"
             class="rounded-0"
+            width="500"
+            height="500"
           ></b-card-img>
         </b-col>
         <b-col md="6">
@@ -14,24 +16,13 @@
             <b-card-text>
               {{ this.data.content }}
             </b-card-text>
-            <div class="tag-container">
-              <b-badge
-                v-for="tag in this.data.tags"
-                :key="tag.id"
-                href="#"
-                variant="dark"
-                :menu_icon_src="tag.menu_icon_src"
-                class="tag-item"
-              >
-                {{ tag.menu_desc }}
-              </b-badge>
-            </div>
+            <tag-list-detail :tags="this.data.hashtags"></tag-list-detail>
             <div class="heart-container">
               <font-awesome-icon
                 icon="heart"
                 class="heart-icon"
               ></font-awesome-icon>
-              <span class="heart-count">{{ this.data.likeCount }}</span>
+              <span class="heart-count">{{ 5 }}</span>
             </div>
           </b-card-body>
         </b-col>
@@ -41,11 +32,13 @@
 </template>
 
 <script>
+import TagListDetail from "@/components/common/TagListDetail.vue";
+
 export default {
   name: "PictureDescription",
-  components: {},
+  components: { TagListDetail },
   props: {
-    data: Object,
+    data: {},
   },
   data() {
     return {};
@@ -56,14 +49,6 @@ export default {
 </script>
 
 <style scoped>
-.tag-container {
-  margin-top: auto;
-}
-
-.tag-item {
-  margin-right: 10px;
-}
-
 .heart-container {
   display: flex;
   align-items: center;

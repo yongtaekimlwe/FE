@@ -2,13 +2,13 @@ import axios from "axios";
 
 // 사용자 관련
 function userInstance() {
-    const instance = axios.create({
-        baseURL: process.env.VUE_APP_USER_BASE_URL,
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-      });
-      return instance;
+  const instance = axios.create({
+    baseURL: process.env.VUE_APP_USER_BASE_URL,
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+  return instance;
 }
 
 // 여행 경로
@@ -21,6 +21,17 @@ function routeInstance() {
     });
     
     return instance;
+  
+// 사진공유 관련
+function pictureInstance() {
+  const instance = axios.create({
+    baseURL: process.env.VUE_APP_PICTURE_BASE_URL,
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+  return instance;
+
 }
 
 function hashtagInstance() {
@@ -33,4 +44,4 @@ function hashtagInstance() {
   return instance;
 }
 
-export { userInstance, routeInstance, hashtagInstance  };
+export { userInstance, routeInstance, pictureInstance, hashtagInstance  };

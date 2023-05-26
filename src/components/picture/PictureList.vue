@@ -1,18 +1,21 @@
 <template>
   <div>
     <div class="tag-item-wrapper">
-      <div v-for="tag in tags" :key="tag.id">
+      <div v-for="tag in hashtags" :key="tag.id">
         <tag-item
           class="col-3"
-          :menu_icon_src="tag.menu_icon_src"
-          :menu_desc="tag.menu_desc"
+          :menu_icon_src="tag.tagIcon"
+          :menu_desc="tag.tagName"
         ></tag-item>
       </div>
     </div>
     <br />
     <div class="text-right">
       <router-link :to="{ name: 'picturepost' }"
-        ><b-button variant="outline-secondary" class="button-right"
+        ><b-button
+          variant="outline-secondary"
+          class="button-right"
+          v-if="userInfo"
           >사진 공유하기</b-button
         ></router-link
       >
@@ -23,19 +26,23 @@
       <div class="card-wrapper">
         <router-link
           class="router-link"
-          v-for="card in cards"
-          :key="card.id"
-          :to="{ name: 'picturedetail', params: { id: card.id } }"
+          v-for="picture in pictures"
+          :key="picture.imageId"
+          :to="{ name: 'picturedetail', params: { imageId: picture.imageId } }"
         >
           <b-card
-            :title="card.title"
-            :img-src="card.imgSrc"
+            :title="picture.title"
+            :img-src="picture.imageUrl"
             img-alt="Image"
             img-top
+            img-width="500"
+            img-height="300"
           >
-            <b-card-text>{{ card.writer }}님의 게시글</b-card-text>
+            <b-card-body
+              ><tag-list-detail :tags="picture.hashtags"></tag-list-detail
+            ></b-card-body>
             <template #footer>
-              <small class="text-muted"> Liked: {{ card.likeCount }} </small>
+              <small class="text-muted"> Liked: 3 </small>
             </template>
           </b-card>
         </router-link>
@@ -45,111 +52,45 @@
 </template>
 
 <script>
+import { getPictures } from "@/api/picture";
 import TagItem from "@/components/common/TagItem.vue";
-
+import TagListDetail from "../common/TagListDetail.vue";
+import { getHashtags } from "@/api/hashtag";
+import { mapState } from "vuex";
+const userStore = "userStore";
 export default {
   name: "PictureList",
-  components: { TagItem },
+  components: { TagItem, TagListDetail },
   data() {
     return {
       message: "Picture List",
-      tags: [
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-        {
-          menu_icon_src: "fa-brands fa-fort-awesome",
-          menu_desc: "즐길거리",
-        },
-      ],
-      cards: [
-        {
-          id: 0,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        {
-          id: 1,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        {
-          id: 2,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        // 더미 데이터 추가
-        {
-          id: 3,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        {
-          id: 4,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-        {
-          id: 5,
-          title: "Title 1",
-          writer: "작성자",
-          likeCount: "3",
-          imgSrc: "https://picsum.photos/300/300/?image=41",
-          tags: [],
-        },
-      ],
+      hashtags: [],
+      pictures: [],
     };
   },
-  created() {},
+  created() {
+    getPictures(
+      ({ data }) => {
+        this.pictures = data.pictures;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    getHashtags(
+      ({ data }) => {
+        this.hashtags = data.hashtags;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  },
   methods: {},
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
 };
 </script>
 <style scoped>
