@@ -31,6 +31,7 @@ function pictureInstance() {
     },
   });
   return instance;
+
 }
 
 function hashtagInstance() {
@@ -42,6 +43,5 @@ function hashtagInstance() {
   });
   return instance;
 }
-
 
 export { userInstance, routeInstance, pictureInstance, hashtagInstance  };

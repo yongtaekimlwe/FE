@@ -7,4 +7,3 @@ async function getHashtags(success, fail) {
 }
 
 export { getHashtags };
-
